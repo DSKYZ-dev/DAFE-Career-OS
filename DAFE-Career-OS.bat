@@ -21,7 +21,7 @@ echo  (The server auto-restarts if it crashes.)
 echo.
 
 :start
-start "" http://localhost:3456
+start "" http://127.0.0.1:3456
 node dashboard.mjs
 echo.
 echo  Server stopped (exit code %ERRORLEVEL%).

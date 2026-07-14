@@ -404,12 +404,12 @@ function server() {
     res.end(html);
   });
 
-  srv.listen(PORT, () => {
+  srv.listen(PORT, '0.0.0.0', () => {
     try { writeFileSync(join(ROOT, 'data', 'server.pid'), String(process.pid)); } catch {}
     console.log(`\n  ╔══════════════════════════════════════════╗`);
     console.log(`  ║     DAFE Career OS Control Dashboard        ║`);
     console.log(`  ╚══════════════════════════════════════════╝`);
-    console.log(`\n  → Open http://localhost:${PORT} in your browser`);
+    console.log(`\n  → Open http://127.0.0.1:${PORT} in your browser`);
     console.log(`  → Press Ctrl+C to stop the server\n`);
     try { execFileSync('start', [`http://localhost:${PORT}`], { shell: true, timeout: 3000 }); } catch {}
   });
@@ -780,6 +780,7 @@ async function postJSON(url, opts) {
 
 function connectSSE() {
   eventSource = new EventSource('/api/stream');
+  eventSource.onopen = () => { setConn(true); const b = document.getElementById('banner'); if (b) b.style.display = 'none'; };
   eventSource.onerror = () => setConn(false);
   eventSource.onmessage = (e) => {
     const data = JSON.parse(e.data);
