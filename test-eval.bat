@@ -1,0 +1,1 @@
+node cloud-eval.mjs --file jds/test-job.txt 2>&1
