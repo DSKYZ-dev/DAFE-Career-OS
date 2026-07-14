@@ -271,7 +271,7 @@ function handleContinuousStop(req, res) {
 // --- End War Room Helpers ---
 
 function server() {
-  const srv = http.createServer((req, res) => {
+  const requestHandler = (req, res) => {
     const url = new URL(req.url, `http://localhost:${PORT}`);
     const path = url.pathname;
 
@@ -423,9 +423,16 @@ function server() {
       res.writeHead(200); res.end(JSON.stringify(getPatterns())); return;
     }
 
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-store' });
     res.end(html);
-  });
+  };
+
+  // Two listeners sharing ONE handler: IPv4 (0.0.0.0) AND IPv6 (::1).
+  // Windows keeps these as separate stacks, and browsers may resolve
+  // "localhost" to either — so we must accept both or a cached tab
+  // loaded under the other family can never reach the server.
+  const srv = http.createServer(requestHandler);
+  const srv6 = http.createServer(requestHandler);
 
   srv.listen(PORT, '0.0.0.0', () => {
     try { writeFileSync(join(ROOT, 'data', 'server.pid'), String(process.pid)); } catch {}
@@ -434,8 +441,12 @@ function server() {
     console.log(`  ╚══════════════════════════════════════════╝`);
     console.log(`\n  → Open http://127.0.0.1:${PORT} in your browser`);
     console.log(`  → Press Ctrl+C to stop the server\n`);
-    try { execFileSync('start', [`http://localhost:${PORT}`], { shell: true, timeout: 3000 }); } catch {}
+    try { execFileSync('start', [`http://127.0.0.1:${PORT}`], { shell: true, timeout: 3000 }); } catch {}
   });
+
+  // IPv6 listener (if the OS supports it) so a browser that resolves
+  // "localhost" to ::1 can still reach the dashboard.
+  try { srv6.listen(PORT, '::1', () => { console.log(`  → Also reachable on http://[::1]:${PORT}`); }); } catch (e) {}
 }
 
 const html = `<!DOCTYPE html>
