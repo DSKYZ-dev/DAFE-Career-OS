@@ -5,7 +5,7 @@
  * 
  * Usage:
  *   node cloud-eval.mjs --file ./jds/job.txt
- *   node cloud-eval.mjs --provider openrouter --model meta-llama/llama-3.1-8b-instruct:free "JD text"
+ *   node cloud-eval.mjs --provider gemini --model gemini-2.5-flash "JD text"
  * 
  * Set API keys in .env:
  *   OPENROUTER_API_KEY=sk-or-...
@@ -45,7 +45,7 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
   USAGE
     node cloud-eval.mjs "<JD text>"
     node cloud-eval.mjs --file ./jds/my-job.txt
-    node cloud-eval.mjs --provider openrouter --model meta-llama/llama-3.1-8b-instruct:free "JD text"
+    node cloud-eval.mjs --provider gemini --model gemini-2.5-flash "JD text"
 
   OPTIONS
     --file <path>     Read JD from file
@@ -59,11 +59,9 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
     ANTHROPIC_API_KEY=sk-ant-...   # console.anthropic.com
     GEMINI_API_KEY=...             # aistudio.google.com
 
-  RECOMMENDED FREE MODELS (OpenRouter):
-    meta-llama/llama-3.1-8b-instruct:free
-    google/gemma-2-9b-it:free
-    microsoft/phi-3-mini-128k-instruct:free
-    mistralai/mistral-7b-instruct:free
+  RECOMMENDED FREE MODELS:
+    Gemini free tier (default): gemini-2.5-flash   (set CLOUD_PROVIDER=gemini)
+    NOTE: OpenRouter ':free' models were retired — use a paid OpenRouter slug or Gemini.
 
   EXAMPLES
     node cloud-eval.mjs "We are looking for a Senior AI Engineer..."
@@ -99,10 +97,10 @@ if (!jdText) { console.error('❌  No Job Description provided.'); process.exit(
 
 // Default models per provider
 const DEFAULT_MODELS = {
-  openrouter: 'meta-llama/llama-3.1-8b-instruct:free',
+  openrouter: 'meta-llama/llama-3.1-8b-instruct',
   openai: 'gpt-4o-mini',
   anthropic: 'claude-3-haiku-20240307',
-  gemini: 'gemini-1.5-flash',
+  gemini: 'gemini-2.5-flash',
 };
 
 // Premium models (require payment)
@@ -183,7 +181,7 @@ async function callProvider() {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://github.com/santifer/DAFE Career OS',
+          'HTTP-Referer': 'https://github.com/DSKYZ-dev/DAFE-Career-OS',
           'X-Title': 'dafe-career-os',
         },
         body: JSON.stringify({

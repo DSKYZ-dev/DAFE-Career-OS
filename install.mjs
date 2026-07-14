@@ -97,7 +97,7 @@ async function setupEnv(nonInteractive = false) {
     log('Non-interactive mode: skipping API key prompts');
     // Ensure required vars exist
     if (!envContent.includes('CLOUD_PROVIDER=')) envContent += `\nCLOUD_PROVIDER=gemini\n`;
-    if (!envContent.includes('CLOUD_MODEL=')) envContent += `CLOUD_MODEL=gemini-1.5-flash\n`;
+    if (!envContent.includes('CLOUD_MODEL=')) envContent += `CLOUD_MODEL=gemini-2.5-flash\n`;
     if (!envContent.includes('OLLAMA_MODEL=')) envContent += `OLLAMA_MODEL=llama3:8b\n`;
     if (!envContent.includes('OLLAMA_BASE_URL=')) envContent += `OLLAMA_BASE_URL=http://127.0.0.1:11434\n`;
     writeFileSync(ENV_PATH, envContent.trim() + '\n');
@@ -149,8 +149,8 @@ async function setupEnv(nonInteractive = false) {
   
   // Model selection
   const models = {
-    gemini: 'gemini-1.5-flash',
-    openrouter: 'meta-llama/llama-3.1-8b-instruct:free',
+    gemini: 'gemini-2.5-flash',
+    openrouter: 'meta-llama/llama-3.1-8b-instruct',
     openai: 'gpt-4o-mini',
     anthropic: 'claude-3-haiku-20240307',
     ollama: 'llama3:8b',

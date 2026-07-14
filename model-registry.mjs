@@ -9,7 +9,7 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 
@@ -88,18 +88,26 @@ class ModelRegistry {
     const providers = [];
 
     if (env.OPENROUTER_API_KEY) {
+      // OpenRouter retired its ':free' tier; list working paid/cheap models.
+      // NOTE: CLOUD_MODEL is only an *override/priority* hint here — it must
+      // NOT filter the list, or a Gemini id (set for the gemini provider) would
+      // wipe every OpenRouter model when the user switches providers.
+      const orModels = [
+        { id: 'meta-llama/llama-3.1-8b-instruct', name: 'Llama 3.1 8B', tier: 'paid', capabilities: ['reasoning', 'chat', 'fast'] },
+        { id: 'meta-llama/llama-3.1-70b-instruct', name: 'Llama 3.1 70B', tier: 'paid', capabilities: ['reasoning', 'strong', 'chat'] },
+        { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash', tier: 'paid', capabilities: ['reasoning', 'fast', 'search'] },
+        { id: 'mistralai/mistral-large', name: 'Mistral Large', tier: 'paid', capabilities: ['reasoning', 'strong'] },
+        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', tier: 'paid', capabilities: ['reasoning', 'strong', 'agentic'] },
+        { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', tier: 'cheap', capabilities: ['reasoning', 'fast', 'chat'] },
+      ];
+      if (env.CLOUD_MODEL && env.CLOUD_MODEL.includes('/')) {
+        orModels.sort((a, b) => (b.id === env.CLOUD_MODEL) - (a.id === env.CLOUD_MODEL));
+      }
       providers.push({
         name: 'openrouter',
         apiKey: env.OPENROUTER_API_KEY,
         baseUrl: 'https://openrouter.ai/api/v1',
-        models: [
-          { id: env.CLOUD_MODEL || 'meta-llama/llama-3.1-8b-instruct', name: 'Llama 3.1 8B', tier: 'free', capabilities: ['reasoning', 'chat', 'fast'] },
-          { id: 'meta-llama/llama-3.1-70b-instruct', name: 'Llama 3.1 70B', tier: 'paid', capabilities: ['reasoning', 'strong', 'chat'] },
-          { id: 'google/gemma-2-27b-it', name: 'Gemma 2 27B', tier: 'free', capabilities: ['reasoning', 'chat'] },
-          { id: 'mistralai/mistral-large', name: 'Mistral Large', tier: 'paid', capabilities: ['reasoning', 'strong'] },
-          { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', tier: 'paid', capabilities: ['reasoning', 'strong', 'agentic'] },
-          { id: 'openai/gpt-4o', name: 'GPT-4o', tier: 'paid', capabilities: ['reasoning', 'strong', 'agentic', 'vision'] },
-        ].filter(m => !env.CLOUD_MODEL || m.id === env.CLOUD_MODEL || m.tier === 'free'),
+        models: orModels,
       });
     }
 
@@ -109,8 +117,8 @@ class ModelRegistry {
         apiKey: env.GEMINI_API_KEY,
         baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
         models: [
-          { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', tier: 'free', capabilities: ['reasoning', 'fast', 'search'] },
-          { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', tier: 'free', capabilities: ['reasoning', 'strong', 'long-context'] },
+          { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', tier: 'free', capabilities: ['reasoning', 'fast', 'search'] },
+          { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', tier: 'free', capabilities: ['reasoning', 'strong', 'long-context'] },
         ],
       });
     }
@@ -411,7 +419,11 @@ Examples:
 }
 
 function isMain() {
-  return process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+  try {
+    return !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+  } catch {
+    return false;
+  }
 }
 
 if (isMain()) main().catch(e => { console.error('Error:', e); process.exit(1); });
