@@ -38,6 +38,8 @@ import yaml from 'js-yaml';
 import { makeHttpCtx } from './providers/_http.mjs';
 import { buildTrustValidator } from './providers/_trust-validator.mjs';
 import { mergeProviderPlugins } from './plugins/_engine.mjs';
+import { getCandidate } from './profile-helper.mjs';
+import { compileKeyword, buildTitleFilter, deriveProfileFilter, loadAggressiveness } from './title-filter.mjs';
 
 const parseYaml = yaml.load;
 
@@ -124,37 +126,9 @@ function resolveProvider(entry, providers, { skipIds = [] } = {}) {
 
 // ── Title filter ────────────────────────────────────────────────────
 
-// Compile a lowercased keyword into a matcher. Short all-letter acronyms
-// (2-3 chars: cfo, coo, sdr, bdr, gsi…) match on WORD BOUNDARIES so "COO" no
-// longer matches "Coordinator", "SDR" no longer matches anything mid-word, etc.
-// Multi-word phrases and keywords containing non-letters (".NET", "SAP ",
-// "L&D") keep fast, permissive substring matching.
-export function compileKeyword(kw) {
-  if (/^[a-z]{2,3}$/.test(kw)) {
-    const re = new RegExp(`\\b${kw}\\b`);
-    return (lower) => re.test(lower);
-  }
-  return (lower) => lower.includes(kw);
-}
-
-export function buildTitleFilter(titleFilter) {
-  // Normalize defensively: a malformed title_filter (a null, numeric, or otherwise
-  // non-string entry in the YAML) must not crash the scan via k.toLowerCase().
-  const normalize = (arr) => (Array.isArray(arr) ? arr : [])
-    .filter(k => typeof k === 'string')
-    .map(k => k.trim().toLowerCase())
-    .filter(k => k.length > 0)
-    .map(compileKeyword);
-  const positive = normalize(titleFilter?.positive);
-  const negative = normalize(titleFilter?.negative);
-
-  return (title) => {
-    const lower = (title || '').toLowerCase();
-    const hasPositive = positive.length === 0 || positive.some(m => m(lower));
-    const hasNegative = negative.some(m => m(lower));
-    return hasPositive && !hasNegative;
-  };
-}
+// Title filtering is shared + profile-driven (see title-filter.mjs).
+// Re-exported here for back-compat with any external caller.
+export { compileKeyword, buildTitleFilter } from './title-filter.mjs';
 
 // ── Location filter ─────────────────────────────────────────────────
 // Optional. If `location_filter` is absent from portals.yml, all locations pass.
@@ -906,7 +880,29 @@ async function main() {
   const config = rawConfig && typeof rawConfig === 'object' ? rawConfig : {};
   const companies = Array.isArray(config.tracked_companies) ? config.tracked_companies : [];
   const boards = Array.isArray(config.job_boards) ? config.job_boards : [];
-  const titleFilter = buildTitleFilter(config.title_filter);
+  // Title filter is driven by the ACTIVE user's profile (their target
+  // roles + skills), so the same engine works for ANY user with any
+  // job focus and any skillset — no hard-coded role list. portals.yml
+  // title_filter is an OPTIONAL extra source; a user-selectable
+  // aggressiveness (data/settings.json) controls how strictly the
+  // positive match is required.
+  const candidateProfile = getCandidate();
+  const profileFilter = deriveProfileFilter(candidateProfile);
+  const portalPos = config.title_filter?.positive;
+  const rolePositives = profileFilter.rolePositives.length
+    ? profileFilter.rolePositives
+    : (Array.isArray(portalPos) ? portalPos : []);
+  const skillPositives = profileFilter.skillPositives;
+  const negPositives = [...new Set([
+    ...profileFilter.negatives,
+    ...(Array.isArray(config.title_filter?.negative) ? config.title_filter.negative : []),
+  ])];
+  const titleFilter = buildTitleFilter({
+    rolePositives,
+    skillPositives,
+    negatives: negPositives,
+    aggressiveness: loadAggressiveness(),
+  });
   const locationFilter = buildLocationFilter(config.location_filter);
   const salaryFilter = buildSalaryFilter(config.salary_filter);
   const trustValidator = buildTrustValidator(config.trust_filter);

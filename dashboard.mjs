@@ -162,13 +162,13 @@ function readJSON(path, def) {
 function getSettings() {
   const f = join(DATA_DIR, 'settings.json');
   try { return JSON.parse(readFileSync(f, 'utf-8')); } catch {
-    const d = { email: '', phone: '', linkedin: '', portfolio: '', followupDays: [3, 7, 14], continuousBatch: 5, continuousMaxDaily: 20, scoreThreshold: 4.0 };
+    const d = { email: '', phone: '', linkedin: '', portfolio: '', followupDays: [3, 7, 14], continuousBatch: 5, continuousMaxDaily: 20, scoreThreshold: 4.0, filterAggressiveness: 'conservative' };
     writeJSON(f, d); return d;
   }
 }
 function saveSettings(data) {
   const cur = getSettings();
-  for (const k of ['email','phone','linkedin','portfolio','followupDays','continuousBatch','continuousMaxDaily','scoreThreshold']) {
+  for (const k of ['email','phone','linkedin','portfolio','followupDays','continuousBatch','continuousMaxDaily','scoreThreshold','filterAggressiveness']) {
     if (data[k] !== undefined) cur[k] = data[k];
   }
   writeJSON(join(DATA_DIR, 'settings.json'), cur);
@@ -696,6 +696,14 @@ tr:hover { background: #263548; cursor: pointer; }
       <input type="number" id="sMaxDaily" value="20" min="1" max="50">
       <div class="hint">Maximum auto-applications per day.</div>
 
+      <label>Job Title Filter Aggressiveness</label>
+      <select id="sAggressiveness">
+        <option value="conservative">Conservative — keep almost everything (broadest)</option>
+        <option value="balanced">Balanced — require a role or skill match (recommended)</option>
+        <option value="aggressive">Aggressive — require a target-role match (narrowest)</option>
+      </select>
+      <div class="hint">How strictly incoming jobs are filtered to your profile. Adjust if too many or too few jobs show up.</div>
+
       <button class="save-btn" onclick="saveSettings()">Save Settings</button>
       <span id="settingsStatus" style="margin-left:12px;font-size:.82rem;color:#4ade80"></span>
     </div>
@@ -1142,6 +1150,7 @@ async function loadSettings() {
   document.getElementById('sFollowupDays').value = (s.followupDays || [3,7,14]).join(', ');
   document.getElementById('sThreshold').value = s.scoreThreshold || 4.0;
   document.getElementById('sMaxDaily').value = s.continuousMaxDaily || 20;
+  document.getElementById('sAggressiveness').value = s.filterAggressiveness || 'conservative';
 }
 
 async function saveSettings() {
@@ -1153,6 +1162,7 @@ async function saveSettings() {
     followupDays: document.getElementById('sFollowupDays').value.split(',').map(function(s) { return parseInt(s.trim()); }).filter(function(n) { return !isNaN(n); }),
     scoreThreshold: parseFloat(document.getElementById('sThreshold').value) || 4.0,
     continuousMaxDaily: parseInt(document.getElementById('sMaxDaily').value) || 20,
+    filterAggressiveness: document.getElementById('sAggressiveness').value,
   };
   var d = await postJSON('/api/settings', { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (d.error) { alert(d.error); return; }

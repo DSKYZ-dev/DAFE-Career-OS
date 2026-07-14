@@ -4,6 +4,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { chromium } from 'playwright';
 import yaml from 'js-yaml';
+import { deriveProfileFilter, buildTitleFilter, loadAggressiveness } from './title-filter.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const PIPELINE_PATH = join(ROOT, 'data', 'pipeline.md');
@@ -30,16 +31,31 @@ function loadProfile() {
 // stays integrated with the candidate's actual targeting. Each track yields
 // a compact OR-query per job board. Returns null if no tracks configured
 // (caller falls back to portals.yml search_queries).
+//
+// Generic fallback: if a user has NO tracks configured, derive a single
+// focus track from their flat `target_roles`, then from `skills`, so the
+// scraper still runs for ANY user with any job focus — not a hard-coded
+// set of roles.
 function buildTrackQueries(profile) {
   const tracks = profile?.tracks || [];
-  if (!tracks.length) return null;
+  let effective = tracks;
+  if (!effective.length) {
+    const roles = (profile?.target_roles || []).filter(Boolean);
+    if (roles.length) {
+      effective = [{ name: 'focus', label: 'Focus', target_roles: roles.slice(0, 12) }];
+    } else {
+      const skills = (profile?.skills || []).filter(Boolean);
+      if (skills.length) effective = [{ name: 'focus', label: 'Focus', target_roles: skills.slice(0, 12) }];
+    }
+  }
+  if (!effective.length) return null;
   const domains = [
     'indeed.com', 'linkedin.com/jobs', 'simplyhired.com',
     'job-boards.greenhouse.io', 'myworkdayjobs.com',
     'remoteok.com', 'weworkremotely.com', 'remotive.com', 'himalayas.app'
   ];
   const queries = [];
-  for (const track of tracks) {
+  for (const track of effective) {
     const roles = (track.target_roles || []).filter(Boolean);
     if (!roles.length) continue;
     const pick = roles.slice(0, 4);
@@ -409,6 +425,27 @@ async function main() {
   }
   const targetQueries = interleaved;
 
+  // Apply the SAME profile-driven title filter the portal scanner uses, so
+  // web-search results stay consistent with `scan.mjs` and respect the
+  // user's aggressiveness setting (Conservative keeps everything).
+  const candidate = loadProfile();
+  const pf = deriveProfileFilter(candidate);
+  const portalPos = config.title_filter?.positive;
+  const rolePositives = pf.rolePositives.length
+    ? pf.rolePositives
+    : (Array.isArray(portalPos) ? portalPos : []);
+  const skillPositives = pf.skillPositives;
+  const negPositives = [...new Set([
+    ...pf.negatives,
+    ...(Array.isArray(config.title_filter?.negative) ? config.title_filter.negative : []),
+  ])];
+  const titleFilter = buildTitleFilter({
+    rolePositives,
+    skillPositives,
+    negatives: negPositives,
+    aggressiveness: loadAggressiveness(),
+  });
+
   console.log(`Scraping ${targetQueries.length} job board queries with Playwright...\n`);
 
   for (let i = 0; i < targetQueries.length; i++) {
@@ -429,7 +466,7 @@ async function main() {
     const newJobs = [];
     for (const job of jobs) {
       const url = normalizeUrl(job.url);
-      if (url && !seenUrls.has(url) && !pipelineUrls.has(url)) {
+      if (url && !seenUrls.has(url) && !pipelineUrls.has(url) && titleFilter(job.role || '')) {
         newJobs.push(job);
       }
     }
