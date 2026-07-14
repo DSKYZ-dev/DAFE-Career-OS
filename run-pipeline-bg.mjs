@@ -54,8 +54,9 @@ process.on('uncaughtException', (e) => { fatal(e && e.stack || e); process.exit(
 process.on('unhandledRejection', (e) => { fatal(e && e.stack || e); process.exit(1); });
 
 function setStatus(obj) {
-  const prev = existsSync(STATUS_FILE) ? JSON.parse(readFileSync(STATUS_FILE, 'utf-8')) : {};
-  writeFileSync(STATUS_FILE, JSON.stringify(Object.assign(prev, obj, { updatedAt: Date.now() }), null, 2));
+  let prev = {};
+  try { if (existsSync(STATUS_FILE)) prev = JSON.parse(readFileSync(STATUS_FILE, 'utf-8')); } catch {}
+  try { writeFileSync(STATUS_FILE, JSON.stringify(Object.assign(prev, obj, { updatedAt: Date.now() }), null, 2)); } catch {}
 }
 function emit(obj) { appendFileSync(EVENTS, JSON.stringify(obj) + '\n'); }
 function logLine(line) { appendFileSync(EVENTS, JSON.stringify({ type: 'log', text: String(line) }) + '\n'); }
