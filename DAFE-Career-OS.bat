@@ -9,12 +9,14 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
-REM Stop any previously-running dashboard from an earlier launch so we always
-REM start exactly ONE fresh server on 3456 (avoids a stale/empty server
-REM holding the port while we do nothing).
-if exist "data\server.pid" (
-    for /f "delims=" %%i in (data\server.pid) do taskkill /pid %%i /f >nul 2>nul
-    del /q "data\server.pid" >nul 2>nul
+REM Kill ANY previous dashboard processes (dashboard.mjs, auto-apply, run-pipeline-bg, etc.)
+for /f "tokens=2 delims= " %%a in ('tasklist /fi "imagename eq node.exe" /fo list /nh ^| findstr /i "dashboard.mjs auto-apply run-pipeline-bg"') do (
+    taskkill /pid %%a /f >nul 2>nul
+)
+
+REM Also kill anything holding port 3456
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":3456" ^| findstr "LISTENING"') do (
+    taskkill /pid %%a /f >nul 2>nul
 )
 
 echo.
@@ -22,7 +24,7 @@ echo  +==============================================+
 echo  ^|     DAFE Career OS Control Dashboard            ^|
 echo  +==============================================+
 echo.
-echo  Starting server...
+echo  Starting fresh server...
 echo  Your browser will open automatically.
 echo  Keep this window open while using the dashboard.
 echo  (The server auto-restarts if it crashes.)
