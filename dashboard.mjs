@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from 'fs';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync, spawn } from 'child_process';
@@ -22,6 +22,7 @@ let sseClients = [];
 
 const EVENTS_FILE = join(ROOT, 'data', 'pipeline-events.log');
 const STATUS_FILE = join(ROOT, 'data', 'pipeline-status.json');
+const PID_FILE = join(ROOT, 'data', 'pipeline.pid');
 
 function sendSSE(data) {
   const msg = `data: ${JSON.stringify(data)}\n\n`;
@@ -41,8 +42,29 @@ function emitEvent(obj) {
   sendSSE(obj);
 }
 
+function isProcessAlive(pid) {
+  try { process.kill(pid, 0); return true; } catch { return false; }
+}
+
+// Authoritative "is a pipeline actually running" check. We do NOT trust the
+// status file alone: if the background process was killed (window closed, crash,
+// killed mid-step) it never writes running:false, which permanently locks the
+// dashboard in a "Running" state. Here we verify the PID is still alive and
+// auto-reset stale state if it is not.
 function isPipelineRunning() {
-  try { return JSON.parse(readFileSync(STATUS_FILE, 'utf-8')).running === true; } catch { return false; }
+  let status;
+  try { status = JSON.parse(readFileSync(STATUS_FILE, 'utf-8')); } catch { return false; }
+  if (status.running !== true) return false;
+  let pid = null;
+  try { pid = parseInt(readFileSync(PID_FILE, 'utf-8').trim(), 10); } catch {}
+  if (pid && isProcessAlive(pid)) return true;
+  // Stale: status says running but the process is gone — clear it so the
+  // dashboard (and new runs) can recover.
+  try {
+    writeFileSync(STATUS_FILE, JSON.stringify(Object.assign(status, { running: false, stepName: 'Interrupted', finishedAt: Date.now() }), null, 2));
+  } catch {}
+  try { unlinkSync(PID_FILE); } catch {}
+  return false;
 }
 
 // Launch the heavy pipeline as a fully DETACHED background process so it
@@ -51,6 +73,7 @@ function startBackgroundJob(mode) {
   if (isPipelineRunning()) return false;
   const child = spawn('node', ['run-pipeline-bg.mjs', mode], { cwd: ROOT, detached: true, stdio: 'ignore' });
   child.unref();
+  try { writeFileSync(PID_FILE, String(child.pid)); } catch {}
   pipelineRunning = true;
   return true;
 }
@@ -797,6 +820,10 @@ function connectSSE() {
       document.getElementById('removeZerosBtn').disabled = true;
       document.getElementById('status-indicator').textContent = '● Running: ' + (data.label || 'Pipeline');
       document.getElementById('progressFill').style.width = '0%';
+      // A replayed/in-flight 'start' must be confirmed against the server's
+      // authoritative state — a killed pipeline leaves a stale 'start' in the
+      // log, and we must NOT lock the UI on it.
+      fetchStatus().then(s => { if (!s.running) forceReady(); });
     } else if (data.type === 'step') {
       document.getElementById('progressFill').style.width = (data.current / data.total * 100) + '%';
     } else if (data.type === 'done') {
@@ -809,6 +836,42 @@ function connectSSE() {
     }
   };
 }
+
+async function fetchStatus() {
+  try { const r = await fetch('/api/pipeline-status'); if (!r.ok) return { running: false }; return await r.json(); }
+  catch { return { running: false }; }
+}
+
+// Force the UI back to a usable "Ready" state (re-enable all buttons, clear
+// the Running indicator) when a run died without a 'done' event.
+function forceReady() {
+  const ind = document.getElementById('status-indicator');
+  if (ind) ind.textContent = '● Ready';
+  const pf = document.getElementById('progressFill');
+  if (pf) pf.style.width = '100%';
+  const rb = document.getElementById('runBtn'); if (rb) rb.disabled = false;
+  const rs = document.getElementById('rescoreBtn'); if (rs) rs.disabled = false;
+  const rz = document.getElementById('removeZerosBtn'); if (rz) rz.disabled = false;
+}
+
+// Reconcile the UI with the server's authoritative running state. Called on
+// load and by the watchdog, so a stale "Running" never permanently locks it.
+async function reconcileStatus() {
+  const s = await fetchStatus();
+  if (!s.running) forceReady();
+}
+
+// Watchdog: if the UI shows "Running" but the server says nothing is
+// actually alive (the PID died), recover. Relies on the authoritative
+// /api/pipeline-status (which verifies the live PID) so a genuinely slow but
+// alive pipeline is never false-reset.
+setInterval(async () => {
+  const ind = document.getElementById('status-indicator');
+  if (ind && /Running/.test(ind.textContent)) {
+    const s = await fetchStatus();
+    if (!s.running) forceReady();
+  }
+}, 15000);
 
 async function runPipeline() {
   const d = await postJSON('/api/run-pipeline');
@@ -995,6 +1058,7 @@ document.getElementById('fMinScore').addEventListener('change', renderTable);
 document.querySelectorAll('#fStatus input').forEach(c => c.addEventListener('change', renderTable));
 
 connectSSE();
+reconcileStatus();
 loadData();
 setInterval(loadData, 8000);
 setInterval(() => { getJSON('/api/applications'); }, 15000);

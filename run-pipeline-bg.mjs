@@ -38,6 +38,21 @@ if (!steps) { console.error('Unknown mode:', mode); process.exit(2); }
 
 const label = mode === 'rescore' ? 'Re-Score' : 'Pipeline';
 
+// A single step (e.g. the Playwright web-search or an LLM evaluation) must
+// never hang the whole pipeline forever. If a step's child exceeds this, we
+// kill it and move on. 30 min is far more than any step should need.
+const STEP_TIMEOUT_MS = 30 * 60 * 1000;
+
+// If we crash unexpectedly, still emit 'done' so the dashboard's UI unlocks
+// (otherwise it would be stuck "Running" with every button disabled).
+function fatal(msg) {
+  try { logLine('  ✗ Fatal: ' + msg); } catch {}
+  try { emit({ type: 'done', success: false }); } catch {}
+  try { setStatus({ running: false, stepName: 'Crashed', finishedAt: Date.now() }); } catch {}
+}
+process.on('uncaughtException', (e) => { fatal(e && e.stack || e); process.exit(1); });
+process.on('unhandledRejection', (e) => { fatal(e && e.stack || e); process.exit(1); });
+
 function setStatus(obj) {
   const prev = existsSync(STATUS_FILE) ? JSON.parse(readFileSync(STATUS_FILE, 'utf-8')) : {};
   writeFileSync(STATUS_FILE, JSON.stringify(Object.assign(prev, obj, { updatedAt: Date.now() }), null, 2));
@@ -66,10 +81,16 @@ function runStep() {
   logLine(`\n[${idx + 1}/${steps.length}] ${step.name}...`);
 
   const child = spawn(step.cmd, step.args, { cwd: ROOT, shell: true });
+  let killed = false;
+  const stepTimer = setTimeout(() => {
+    killed = true;
+    logLine(`  ⚠ Step timed out after ${Math.round(STEP_TIMEOUT_MS / 60000)} min — killing and continuing.`);
+    try { child.kill('SIGKILL'); } catch {}
+  }, STEP_TIMEOUT_MS);
   child.stdout.on('data', d => { for (const l of d.toString().split('\n').filter(Boolean)) logLine('  ' + l.trimEnd()); });
   child.stderr.on('data', d => { for (const l of d.toString().split('\n').filter(Boolean)) logLine('  ! ' + l.trimEnd()); });
-  const next = () => { idx++; setTimeout(runStep, 300); };
-  child.on('close', code => { logLine(code === 0 ? '  ✓ Done' : `  ⚠ Exit code ${code}`); next(); });
-  child.on('error', err => { logLine('  ✗ Error: ' + err.message); next(); });
+  const next = () => { clearTimeout(stepTimer); idx++; setTimeout(runStep, 300); };
+  child.on('close', code => { clearTimeout(stepTimer); logLine(killed ? '  ⚠ Skipped (timed out)' : code === 0 ? '  ✓ Done' : `  ⚠ Exit code ${code}`); next(); });
+  child.on('error', err => { clearTimeout(stepTimer); logLine('  ✗ Error: ' + err.message); next(); });
 }
 runStep();
