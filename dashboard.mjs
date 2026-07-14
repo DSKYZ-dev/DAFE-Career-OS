@@ -258,17 +258,50 @@ function server() {
 
     if (path === '/api/stream') {
       res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
+      res.write('retry: 3000\n\n');
       sseClients.push(res);
-      req.on('close', () => { sseClients = sseClients.filter(r => r !== res); });
-      // Resume: if a job is currently running, replay its event log so a
-      // reconnecting client sees progress instead of a blank panel.
+
+      // Replay the recent tail immediately so a client that connects mid-run
+      // sees current progress instead of a blank panel.
+      let lastLen = 0;
       try {
-        const status = JSON.parse(readFileSync(STATUS_FILE, 'utf-8'));
-        if (status.running && existsSync(EVENTS_FILE)) {
-          const tail = readFileSync(EVENTS_FILE, 'utf-8').trim().split('\n').slice(-300);
-          for (const line of tail) { if (line.trim()) res.write(`data: ${line}\n\n`); }
+        if (existsSync(EVENTS_FILE)) {
+          const text = readFileSync(EVENTS_FILE, 'utf-8');
+          lastLen = text.length;
+          for (const line of text.trim().split('\n').slice(-300)) {
+            if (line.trim()) res.write(`data: ${line}\n\n`);
+          }
         }
       } catch {}
+
+      // Live tail: run-pipeline-bg.mjs is a SEPARATE process and cannot push
+      // to our SSE clients directly, so we poll the event log file and forward
+      // any new (complete) lines. Without this, the dashboard froze on a
+      // "Running" state with a stuck progress bar and never reloaded data.
+      const pushNew = () => {
+        try {
+          if (!existsSync(EVENTS_FILE)) return;
+          const text = readFileSync(EVENTS_FILE, 'utf-8');
+          if (text.length < lastLen) lastLen = 0; // file truncated (new run) — resend from start
+          if (text.length > lastLen) {
+            const chunk = text.slice(lastLen);
+            const nl = chunk.lastIndexOf('\n');
+            if (nl !== -1) {
+              lastLen += nl + 1;
+              for (const line of chunk.slice(0, nl).split('\n')) {
+                if (line.trim()) res.write(`data: ${line}\n\n`);
+              }
+            }
+          }
+        } catch {}
+      };
+      const tailTimer = setInterval(pushNew, 400);
+
+      const cleanup = () => {
+        clearInterval(tailTimer);
+        sseClients = sseClients.filter(r => r !== res);
+      };
+      req.on('close', cleanup);
       return;
     }
 
