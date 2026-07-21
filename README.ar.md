@@ -3,7 +3,7 @@
 [English](README.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md)
 
 <p align="right" dir="rtl">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="DAFE Career OS — نظام البحث عن وظائف القائم على عدة وكلاء ذكاء اصطناعي" width="800"></a>
+  <img src="docs/hero-banner.jpg" alt="DAFE Career OS — نظام البحث عن وظائف القائم على عدة وكلاء ذكاء اصطناعي" width="800">
 </p>
 
 <p align="center" dir="rtl">
@@ -59,7 +59,7 @@
 
 > **تنبيه: التقييمات الأولى لن تكون مثالية.** النظام لا يعرفك بعد. يجب أن تغذيه بالمعلومات الكافية — سيرتك الذاتية، قصتك المهنية، نقاط الإثبات والإنجازات الخاصة بك، تفضيلاتك، وما تبرع فيه وما تود تجنبه. كلما زدت من تدريبه وتخصيصه، أصبح أفضل. فكر في الأمر كأنك تقوم بتدريب مسؤول توظيف جديد يعمل لصالحك: في الأسبوع الأول يحتاج ليتعلم عنك، ثم يصبح لا غنى عنه.
 
-تم تطوير هذا النظام بواسطة مهندس برمجيات وريادي أعمال استخدمه شخصياً لتقييم أكثر من 740 عرض عمل، وتوليد أكثر من 100 سيرة ذاتية مخصصة، حتى حصل على منصب "رئيس قسم الذكاء الاصطناعي التطبيقي". [اقرأ دراسة الحالة الكاملة](https://santifer.io/dafe-career-os-system).
+تم تطوير هذا النظام بواسطة مهندس برمجيات وريادي أعمال استخدمه شخصياً لتقييم أكثر من 740 عرض عمل، وتوليد أكثر من 100 سيرة ذاتية مخصصة، حتى حصل على منصب "رئيس قسم الذكاء الاصطناعي التطبيقي". [اقرأ دراسة الحالة الكاملة](https://github.com/DSKYZ-dev/DAFE-Career-OS/dafe-career-os-system).
 
 ---
 
@@ -84,7 +84,7 @@
 
 ```bash
 # 1. استنساخ المشروع وتثبيت الاعتماديات
-git clone https://github.com/santifer/DAFE Career OS.git
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
 cd dafe-career-os && npm install
 npx playwright install chromium   # مطلوب لتوليد ملفات الـ PDF وسحب البيانات
 
@@ -274,8 +274,8 @@ dafe-career-os/
 
 نرحب بكافة المساهمات والمقترحات لتطوير هذا النظام ودعمه! انضم إلى مجتمعنا على Discord وشارك تجربتك وقصتك معنا.
 
-<a href="https://github.com/santifer/DAFE Career OS/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=santifer/DAFE Career OS" alt="Contributors" />
+<a href="https://github.com/DSKYZ-dev/DAFE-Career-OS/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=DSKYZ-dev/DAFE-Career-OS" alt="Contributors" />
 </a>
 
-هل نجحت في الحصول على وظيفة أحلامك باستخدام هذا النظام؟ [شارك قصتك معنا لتلهم الآخرين!](https://github.com/santifer/DAFE Career OS/issues/new?template=i-got-hired.yml)
+هل نجحت في الحصول على وظيفة أحلامك باستخدام هذا النظام؟ [شارك قصتك معنا لتلهم الآخرين!](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/new?template=i-got-hired.yml)

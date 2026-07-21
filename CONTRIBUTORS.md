@@ -8,13 +8,13 @@ Contributors with sustained technical ownership over specific areas. Full author
 
 - **[@bracketouverte](https://github.com/bracketouverte)** (Michael) — Technical contributor focused on scan mode and ATS research. Running daily support in Discord.
 
-- **[@piscespieces](https://github.com/piscespieces)** (Andres Urdaneta) — Docs architect. Maintains the getting-started guides at [DAFE Career OS-docs.vercel.app](https://DAFE Career OS-docs.vercel.app). Shipped [PR #286](https://github.com/santifer/DAFE Career OS/pull/286) (portals cleanup). Authored the comparative analysis that defines what dafe-career-os is vs. isn't.
+- **[@piscespieces](https://github.com/piscespieces)** (Andres Urdaneta) — Docs architect. Maintains the getting-started guides at [DAFE Career OS-docs.vercel.app](https://DAFE Career OS-docs.vercel.app). Shipped [PR #286](https://github.com/DSKYZ-dev/DAFE-Career-OS/pull/286) (portals cleanup). Authored the comparative analysis that defines what dafe-career-os is vs. isn't.
 
 ## Shipping with the project
 
 - **[@razour08](https://github.com/razour08)** (Ramzi Dekali) — Arabic translation support (`modes/ar/` and `README.ar.md`) for the Arab market.
-- **[@CURT1S03](https://github.com/CURT1S03)** (Curtis) — LaTeX/Overleaf CV export ([PR #362](https://github.com/santifer/DAFE Career OS/pull/362), merged — resolves [#47](https://github.com/santifer/DAFE Career OS/issues/47))
-- **[@vivek-gite](https://github.com/vivek-gite)** — A16Z provider support ([PR #271](https://github.com/santifer/DAFE Career OS/pull/271), in review)
+- **[@CURT1S03](https://github.com/CURT1S03)** (Curtis) — LaTeX/Overleaf CV export ([PR #362](https://github.com/DSKYZ-dev/DAFE-Career-OS/pull/362), merged — resolves [#47](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/47))
+- **[@vivek-gite](https://github.com/vivek-gite)** — A16Z provider support ([PR #271](https://github.com/DSKYZ-dev/DAFE-Career-OS/pull/271), in review)
 - **@3fones** — LinkedIn scanner (WIP, paid Claude Max to build on top of the project)
 - **@kennedy58** — Testing alternative inference providers
 - **@kelvan** — Surfaced the token consumption issue that drove the optimization roadmap
@@ -23,8 +23,8 @@ Contributors with sustained technical ownership over specific areas. Full author
 
 Members who landed roles using dafe-career-os and opted in to share their journey publicly. Their tips and patterns shape how we explain the project.
 
-- **[@logumani2112](https://github.com/logumani2112)** — Landed Backend Developer (.NET) at an IT services company. 50 listings evaluated, 1 month from first scan to offer. Most useful feature: A–F evaluation scoring. Their tip: *"Focus on quality over quantity. Use the evaluation scoring to prioritize the right opportunities and tailor your resume for each role."* ([#440](https://github.com/santifer/DAFE Career OS/issues/440))
-- **[@chinna63055](https://github.com/chinna63055)** — 200 listings evaluated, 2 weeks from first scan to offer. Most useful feature: A–F evaluation scoring. ([#388](https://github.com/santifer/DAFE Career OS/issues/388))
+- **[@logumani2112](https://github.com/logumani2112)** — Landed Backend Developer (.NET) at an IT services company. 50 listings evaluated, 1 month from first scan to offer. Most useful feature: A–F evaluation scoring. Their tip: *"Focus on quality over quantity. Use the evaluation scoring to prioritize the right opportunities and tailor your resume for each role."* ([#440](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/440))
+- **[@chinna63055](https://github.com/chinna63055)** — 200 listings evaluated, 2 weeks from first scan to offer. Most useful feature: A–F evaluation scoring. ([#388](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/388))
 
 ## Community Guides
 

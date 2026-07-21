@@ -3,7 +3,7 @@
 [English](README.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md)
 
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="DAFE Career OS Sistema Multi-Agente de Busqueda de Empleo" width="800"></a>
+  <img src="docs/hero-banner.jpg" alt="DAFE Career OS Sistema Multi-Agente de Busqueda de Empleo" width="800">
 </p>
 
 <p align="center">
@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/25195" target="_blank"><img src="https://trendshift.io/api/badge/repositories/25195" alt="santifer%2Fdafe-career-os | Trendshift" style="width: 245px; height: 54px; vertical-align: middle;" width="245" height="54"/></a>
+  <a href="https://trendshift.io/repositories/25195" target="_blank"><img src="https://trendshift.io/api/badge/repositories/25195" alt="DSKYZ-dev%2FDAFE-Career-OS | Trendshift" style="width: 245px; height: 54px; vertical-align: middle;" width="245" height="54"/></a>
   &nbsp;&nbsp;
-  <a href="https://www.producthunt.com/products/santifer-io?utm_source=badge-featured&utm_medium=badge" target="_blank"><img src="docs/press/producthunt.svg" alt="DAFE Career OS on Claude | Product Hunt" style="width: 206px; height: 54px; vertical-align: middle;" width="206" height="54"/></a>
+  
 </p>
 
 <p align="center"><sub>APARECE EN</sub></p>
@@ -38,7 +38,7 @@
   <a href="https://warpchart.dev/hq">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://warpchart.dev/api/chart?theme=dark&v=3">
-      <img alt="Live star telemetry of santifer/DAFE Career OS" src="https://warpchart.dev/api/chart?theme=light&v=3" loading="lazy">
+      <img alt="Live star telemetry of DSKYZ-dev/DAFE-Career-OS" src="https://warpchart.dev/api/chart?theme=light&v=3" loading="lazy">
     </picture>
   </a>
 </p>
@@ -46,7 +46,7 @@
 <p align="center">
   <a href="https://discord.gg/8pRpHETxa4"><img src="https://img.shields.io/badge/Unete_a_la_comunidad-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
   &nbsp;
-  <a href="https://www.npmjs.com/package/@santifer/DAFE Career OS"><img src="https://img.shields.io/npm/dt/@santifer/DAFE Career OS?style=for-the-badge&logo=npm&color=CB3837&label=npx%20installs" alt="npm installs"></a>
+  <a href="https://www.npmjs.com/package/dafe-career-os-init"><img src="https://img.shields.io/npm/dt/dafe-career-os-init?style=for-the-badge&logo=npm&color=CB3837&label=npx%20installs" alt="npm installs"></a>
 </p>
 
 <p align="center">
@@ -84,7 +84,7 @@ DAFE Career OS convierte cualquier CLI de IA en un centro de mando de busqueda d
 
 > **Aviso: las primeras evaluaciones no seran buenas.** El sistema no te conoce todavia. Dale contexto -- tu CV, tu historia profesional, tus proof points, tus preferencias, en que eres bueno, que quieres evitar. Cuanto mas lo nutras, mejor filtra. Piensa en ello como hacer onboarding a un recruiter nuevo: la primera semana necesita conocerte, luego se vuelve invaluable.
 
-Construido por alguien que lo uso para evaluar 740+ ofertas, generar 100+ CVs personalizados, y conseguir un rol de Head of Applied AI. [Lee el case study completo](https://santifer.io/dafe-career-os).
+Construido por alguien que lo uso para evaluar 740+ ofertas, generar 100+ CVs personalizados, y conseguir un rol de Head of Applied AI. [Lee el case study completo](https://github.com/DSKYZ-dev/DAFE-Career-OS/dafe-career-os).
 
 ## Features
 
@@ -106,7 +106,7 @@ Construido por alguien que lo uso para evaluar 740+ ofertas, generar 100+ CVs pe
 **La forma mas rapida — un solo comando:**
 
 ```bash
-npx @santifer/DAFE Career OS init
+npx dafe-career-os-init init
 ```
 
 > 💡 `npx` viene incluido con [Node.js](https://nodejs.org) — ejecuta el instalador una vez, sin instalar nada de forma global. ¿No tienes Node? Instalalo primero. (¿Ya usas un CLI como Claude Code / Gemini / Codex? Entonces ya lo tienes.)
@@ -124,7 +124,7 @@ claude   # o gemini / codex / qwen / opencode — abre tu CLI de IA aqui
 <summary><b>¿Prefieres instalarlo manualmente? (git clone)</b></summary>
 
 ```bash
-git clone https://github.com/santifer/DAFE Career OS.git
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
 cd dafe-career-os && npm install
 npx playwright install chromium   # solo para generar PDFs
 claude   # abre tu CLI de IA — te guiara en el primer arranque
@@ -254,7 +254,7 @@ dafe-career-os/
 
 Soy Santiago -- Head of Applied AI, ex-fundador (monte y vendi un negocio que sigue funcionando con mi nombre). Construi dafe-career-os para gestionar mi propia busqueda de empleo. Funciono: lo use para conseguir mi puesto actual.
 
-Mi portfolio y otros proyectos open source → [santifer.io](https://santifer.io)
+Mi portfolio y otros proyectos open source → [github.com/DSKYZ-dev/DAFE-Career-OS](https://github.com/DSKYZ-dev/DAFE-Career-OS)
 
 ## Documentacion
 
@@ -264,7 +264,7 @@ Mi portfolio y otros proyectos open source → [santifer.io](https://santifer.io
 
 ## Tambien Open Source
 
-- **[cv-santiago](https://github.com/santifer/cv-santiago)** -- El portfolio (santifer.io) con chatbot IA, dashboard LLMOps y case studies. Si necesitas un portfolio para acompañar tu busqueda de empleo, echale un vistazo.
+- **[cv-santiago](https://github.com/DSKYZ-dev/DAFE-Career-OS)** -- El portfolio (github.com/DSKYZ-dev/DAFE-Career-OS) con chatbot IA, dashboard LLMOps y case studies. Si necesitas un portfolio para acompañar tu busqueda de empleo, echale un vistazo.
 
 
 ## Aviso legal
@@ -284,8 +284,5 @@ MIT
 
 ## Conecta
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/8pRpHETxa4)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hola@santifer.io)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DSKYZ-dev/DAFE-Career-OS)

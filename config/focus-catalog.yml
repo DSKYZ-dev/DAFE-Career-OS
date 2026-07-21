@@ -1,0 +1,92 @@
+# DAFE Career OS — Job Focus Catalog (SYSTEM LAYER — do not put personal data here)
+#
+# Starter categories the dashboard's Settings > Job Focus UI lets any user
+# multi-select from, regardless of what field they're in. Each category is a
+# stable `id` (referenced by config/profile.yml's user-layer `active_focuses`
+# — renaming a `label` here later won't orphan anyone's selection) plus seed
+# keywords used by title-filter.mjs to match real job-posting titles.
+#
+# Add more categories freely — this is meant to be edited. Keywords should be
+# short, realistic title fragments (2-4 words), not compound/decorative
+# phrases — title-filter.mjs matches them close to literally.
+
+focuses:
+  - id: software-engineering
+    label: "Software Engineering"
+    keywords: ["software engineer", "backend engineer", "frontend engineer", "full stack engineer", "application developer"]
+
+  - id: ai-ml
+    label: "AI / Machine Learning"
+    keywords: ["machine learning engineer", "ai engineer", "ml engineer", "deep learning engineer", "nlp engineer"]
+
+  - id: data
+    label: "Data / Analytics"
+    keywords: ["data engineer", "data analyst", "data scientist", "business intelligence", "analytics engineer"]
+
+  - id: product
+    label: "Product Management"
+    keywords: ["product manager", "product owner", "technical product manager"]
+
+  - id: design
+    label: "Design / UX"
+    keywords: ["product designer", "ux designer", "ui designer", "graphic designer"]
+
+  - id: devops-infra
+    label: "DevOps / Infrastructure"
+    keywords: ["devops engineer", "site reliability engineer", "infrastructure engineer", "platform engineer", "cloud engineer"]
+
+  - id: qa-test
+    label: "QA / Testing"
+    keywords: ["qa engineer", "test engineer", "quality assurance", "automation tester"]
+
+  - id: security
+    label: "Security"
+    keywords: ["security engineer", "cybersecurity", "application security", "penetration tester"]
+
+  - id: it-support
+    label: "IT / Technical Support"
+    keywords: ["it support", "help desk", "technical support engineer", "desktop support", "systems administrator"]
+
+  - id: ops-production
+    label: "Operations / Production"
+    keywords: ["operations manager", "production lead", "warehouse operations", "plant operator", "logistics coordinator"]
+
+  - id: sales
+    label: "Sales"
+    keywords: ["sales representative", "account executive", "business development", "sales engineer"]
+
+  - id: marketing
+    label: "Marketing"
+    keywords: ["marketing manager", "digital marketing", "content marketing", "seo specialist", "growth marketer"]
+
+  - id: customer-success
+    label: "Customer Success / Support"
+    keywords: ["customer success manager", "customer support", "client success", "account manager"]
+
+  - id: hr-recruiting
+    label: "HR / Recruiting"
+    keywords: ["recruiter", "talent acquisition", "hr generalist", "people operations"]
+
+  - id: finance-accounting
+    label: "Finance / Accounting"
+    keywords: ["accountant", "financial analyst", "bookkeeper", "accounts payable"]
+
+  - id: project-management
+    label: "Project / Program Management"
+    keywords: ["project manager", "program manager", "scrum master", "delivery manager"]
+
+  - id: trades-skilled-labor
+    label: "Skilled Trades"
+    keywords: ["electrician", "plumber", "hvac technician", "machinist", "welder"]
+
+  - id: healthcare-support
+    label: "Healthcare Support"
+    keywords: ["medical assistant", "patient care technician", "healthcare administrator", "pharmacy technician"]
+
+  - id: education-training
+    label: "Education / Training"
+    keywords: ["teacher", "instructional designer", "corporate trainer", "tutor"]
+
+  - id: general-entry-level
+    label: "Any Entry-Level / General Role"
+    keywords: ["entry level", "no experience required", "will train", "trainee", "general labor", "warehouse associate", "retail associate"]

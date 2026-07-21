@@ -9,36 +9,36 @@
 # this list once there is more than one code owner.
 
 # Repo docs & governance
-/README*.md            @santifer
-/CONTRIBUTING.md       @santifer
-/MAINTAINERS.md        @santifer
-/ARCHITECTURE.md       @santifer
-/.github/CODEOWNERS    @santifer
+/README*.md            @DSKYZ-dev
+/CONTRIBUTING.md       @DSKYZ-dev
+/MAINTAINERS.md        @DSKYZ-dev
+/ARCHITECTURE.md       @DSKYZ-dev
+/.github/CODEOWNERS    @DSKYZ-dev
 
 # Agent behavior & the multi-CLI contract (prompt layer — CI-blind)
-/CLAUDE.md             @santifer
-/AGENTS.md             @santifer
-/CODEX.md              @santifer
-/OPENCODE.md           @santifer
-/GEMINI.md             @santifer
+/CLAUDE.md             @DSKYZ-dev
+/AGENTS.md             @DSKYZ-dev
+/CODEX.md              @DSKYZ-dev
+/OPENCODE.md           @DSKYZ-dev
+/GEMINI.md             @DSKYZ-dev
 
 # Scoring & the system/user data contract (CI-blind; silent-danger)
-/modes/_shared.md      @santifer
-/DATA_CONTRACT.md      @santifer
+/modes/_shared.md      @DSKYZ-dev
+/DATA_CONTRACT.md      @DSKYZ-dev
 
 # The self-updater (catastrophic if wrong — touches user installs)
-/update-system.mjs     @santifer
-/updater-migration-tests.mjs  @santifer
+/update-system.mjs     @DSKYZ-dev
+/updater-migration-tests.mjs  @DSKYZ-dev
 
 # Plugin governance chokepoint (a bad change here ships unreviewed code to
 # every user — the registry pin, the gates, and the CI must stay single-owner).
-/plugins-registry.json         @santifer
-/validate-plugin-registry.mjs  @santifer
-/plugin-install.mjs            @santifer
-/plugin-audit.mjs              @santifer
-/plugins/_engine.mjs           @santifer
-/plugins/_lock.mjs             @santifer
-/plugins/_net.mjs              @santifer
-/plugins/_registry.mjs         @santifer
-/.github/workflows/            @santifer
-/docs/PLUGIN_REVIEW.md         @santifer
+/plugins-registry.json         @DSKYZ-dev
+/validate-plugin-registry.mjs  @DSKYZ-dev
+/plugin-install.mjs            @DSKYZ-dev
+/plugin-audit.mjs              @DSKYZ-dev
+/plugins/_engine.mjs           @DSKYZ-dev
+/plugins/_lock.mjs             @DSKYZ-dev
+/plugins/_net.mjs              @DSKYZ-dev
+/plugins/_registry.mjs         @DSKYZ-dev
+/.github/workflows/            @DSKYZ-dev
+/docs/PLUGIN_REVIEW.md         @DSKYZ-dev

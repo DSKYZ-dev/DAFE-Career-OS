@@ -1,50 +1,20 @@
 # DAFE Career OS
 
-[English](README.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md)
-
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="DAFE Career OS Multi-Agent Job Search System" width="800"></a>
+  <img src="branding/hero-banner.png" alt="DAFE Career OS — AI Job Search Command Center" width="900">
 </p>
 
 <p align="center">
   <em>I spent months applying to jobs the hard way. So I engineered the system I wish I had.</em><br>
-  Companies use AI to filter candidates. <strong>I just gave candidates AI to <em>choose</em> companies.</strong><br>
+  Companies use AI to filter candidates. <strong>I gave candidates AI to <em>choose</em> companies.</strong><br>
   <em>Now it's open source.</em>
 </p>
 
-> **Attribution:** DAFE Career OS is a rebrand of **career-ops** by [santifer](https://santifer.io) (MIT). The original [`LICENSE`](LICENSE) is preserved unmodified and full credit is given to the upstream author. See [`ATTRIBUTIONS.md`](ATTRIBUTIONS.md).
-
 <p align="center">
-  <a href="https://trendshift.io/repositories/25195" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/25195" alt="santifer%2Fdafe-career-os | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-</p>
-
-<p align="center">
-  <a href="https://www.producthunt.com/products/santifer-io?utm_source=badge-featured&utm_medium=badge" target="_blank" rel="noopener noreferrer"><img src="docs/press/producthunt.svg" alt="DAFE Career OS on Claude | Product Hunt" style="width: 206px; height: 54px; vertical-align: middle;" width="206" height="54"/></a>
-</p>
-
-<p align="center"><sub>FEATURED IN</sub></p>
-
-<p align="center">
-  <a href="https://wired.com.gr/article/to-ai-ergaleio-pou-fernei-epanastasi-ston-tropo-pou-psachnoume-douleia/" rel="noopener noreferrer nofollow"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/press/wired-dark.svg"><img src="docs/press/wired.svg" alt="WIRED" height="32"></picture></a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://www.businessinsider.com/how-i-built-tool-filter-job-listings-landed-head-ai-2026-4" rel="noopener noreferrer nofollow"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/press/business-insider-dark.svg"><img src="docs/press/business-insider.svg" alt="Business Insider" height="32"></picture></a>
-</p>
-
----
-
-<p align="center">
-  <img src="docs/demo.gif" alt="DAFE Career OS Demo" width="800">
-</p>
-
-<p align="center"><strong>740+ job listings evaluated · 100+ personalized CVs · 1 dream role landed</strong></p>
-
-<p align="center">
-  <a href="https://warpchart.dev/hq">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://warpchart.dev/api/chart?theme=dark&v=3">
-      <img alt="Live star telemetry of santifer/DAFE Career OS" src="https://warpchart.dev/api/chart?theme=light&v=3" loading="lazy">
-    </picture>
-  </a>
+  <a href="https://github.com/DSKYZ-dev/DAFE-Career-OS/releases/latest"><img src="https://img.shields.io/github/v/release/DSKYZ-dev/DAFE-Career-OS?style=for-the-badge&label=release&color=2ea44f" alt="Latest release"></a>
+  <a href="https://www.npmjs.com/package/dafe-career-os-init"><img src="https://img.shields.io/npm/v/dafe-career-os-init?style=for-the-badge&label=npx&color=2ea44f" alt="npm"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"></a>
+  <a href="TRADEMARK.md"><img src="https://img.shields.io/badge/Trademark-Policy-blue?style=for-the-badge" alt="Trademark Policy"></a>
 </p>
 
 <p align="center">
@@ -52,15 +22,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/santifer/DAFE Career OS/releases/latest"><img src="https://img.shields.io/npm/v/%40santifer%2Fdafe-career-os?style=for-the-badge&labelColor=2b3137&color=2ea44f&label=release" alt="Latest release"></a>
-</p>
-
-<p align="center">
-  <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/Built_with-Claude_Code-000?style=for-the-badge&logo=anthropic&logoColor=white" alt="Built with Claude Code"></a>
-</p>
-
-<p align="center">
-  <sub>Also runs on any agent-skill-standard CLI. See <a href="docs/SUPPORTED_CLIS.md">Supported CLIs</a>.</sub><br>
+  <sub>Also runs on any agent-skill-standard CLI:</sub><br>
   <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
   <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
   <img src="https://img.shields.io/badge/Antigravity_CLI-4285F4?style=flat&logo=google&logoColor=white" alt="Antigravity CLI">
@@ -73,56 +35,121 @@
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white" alt="Playwright">
-  <img src="https://img.shields.io/badge/Bubble_Tea-FF75B5?style=flat&logo=go&logoColor=white" alt="Bubble Tea">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT">
-  <a href="TRADEMARK.md"><img src="https://img.shields.io/badge/Trademark-Policy-blue.svg" alt="Trademark Policy"></a>
 </p>
+
+---
+
+## 📖 Table of Contents
+
+- [What Is This](#what-is-this)
+- [Features](#features)
+- [🚀 I Need A Job Now! (One-Click Entry-Level Blaster)](#-i-need-a-job-now-one-click-entry-level-blaster)
+- [Quick Start](#quick-start)
+- [CLI Integrations](#cli-integrations)
+- [Usage](#usage)
+- [How It Works](#how-it-works)
+- [Pre-configured Portals](#pre-configured-portals)
+- [Dashboard TUI](#dashboard-tui)
+- [Project Structure](#project-structure)
+- [Tech Stack](#tech-stack)
+- [Contributing](#contributing)
+- [Code of Conduct](#code-of-conduct)
+- [License & Trademark](#license--trademark)
+- [Disclaimer](#disclaimer)
+- [About & Attribution](#about--attribution)
+
+---
 
 ## What Is This
 
-DAFE Career OS ([dafe-career-os.org](https://dafe-career-os.org), also known as **careerops**) turns any AI coding CLI into a full job search command center. Instead of manually tracking applications in a spreadsheet, you get an AI-powered pipeline that:
+**DAFE Career OS** turns any AI coding CLI into a full job-search command center. Instead of tracking applications in a spreadsheet, you get an AI-powered pipeline that:
 
-- **Evaluates offers** with a structured A-F scoring system (10 weighted dimensions)
-- **Generates tailored PDFs** -- ATS-optimized CVs customized per job description
+- **Evaluates offers** with a structured A–F scoring system (10 weighted dimensions)
+- **Generates tailored PDFs** — ATS-optimized CVs customized per job description
 - **Scans portals** automatically (Greenhouse, Ashby, Lever, company pages)
-- **Processes in batch** -- evaluate 10+ offers in parallel with sub-agents
+- **Processes in batch** — evaluate 10+ offers in parallel with sub-agents
 - **Tracks everything** in a single source of truth with integrity checks
+- **Blasts entry-level roles** — the *"I Need A Job Now!"* mode fires tailored CVs + cover letters at any role anyone can apply to
 
-> **Important: This is NOT a spray-and-pray tool.** DAFE Career OS is a filter -- it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 4.0/5. Your time is valuable, and so is the recruiter's. Always review before submitting.
+> **Important: This is NOT a spray-and-pray tool.** DAFE Career OS is a filter — it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 4.0/5 in normal mode. Your time is valuable, and so is the recruiter's. Always review before submitting.
 
-DAFE Career OS is agentic: whichever AI coding CLI you choose navigates career pages with Playwright, evaluates fit by reasoning about your CV vs the job description (not keyword matching), and adapts your resume per listing.
+DAFE Career OS is agentic: whichever AI coding CLI you choose navigates career pages with Playwright, evaluates fit by reasoning about your CV vs. the job description (not keyword matching), and adapts your resume per listing.
 
-> **Heads up: the first evaluations won't be great.** The system doesn't know you yet. Feed it context -- your CV, your career story, your proof points, your preferences, what you're good at, what you want to avoid. The more you nurture it, the better it gets. Think of it as onboarding a new recruiter: the first week they need to learn about you, then they become invaluable.
+> **Heads up: the first evaluations won't be great.** The system doesn't know you yet. Feed it context — your CV, your career story, your proof points, your preferences. The more you nurture it, the better it gets.
 
-Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role. [Read the full case study](https://santifer.io/dafe-career-os-system).
+---
 
 ## Features
 
-| Feature                  | Description                                                                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **Auto-Pipeline**        | Paste a URL, get a full evaluation + PDF + tracker entry                                                                                 |
-| **6-Block Evaluation**   | Role summary, CV match, level strategy, comp research, personalization, interview prep (STAR+R) -- plus a Block G posting-legitimacy check that flags scams and ghost jobs |
-| **Interview Story Bank** | Accumulates STAR+Reflection stories across evaluations -- 5-10 master stories that answer any behavioral question                        |
-| **Negotiation Scripts**  | Salary negotiation frameworks, geographic discount pushback, competing offer leverage                                                    |
-| **ATS PDF Generation**   | Keyword-injected CVs with Space Grotesk + DM Sans design                                                                                 |
-| **Cover Letter Generator** | Research-backed cover letters with keyword mirroring, four interactive angle prompts (why/problems/approach/tone), draft-in-chat approval gate, and A4 PDF via the same HTML + Playwright pipeline as CVs. Auto-drafts on every evaluation; complete and generate on demand via `/dafe-career-os cover` |
-| **Portal Scanner**       | 45+ companies pre-configured (Anthropic, OpenAI, ElevenLabs, Retool, n8n...) + custom queries across Ashby, Greenhouse, Lever, Wellfound |
-| **Batch Processing**     | Parallel evaluation with headless CLI workers (`claude -p` / `opencode run`)                                                             |
-| **Dashboard TUI**        | Terminal UI to browse, filter, and sort your pipeline                                                                                    |
-| **Human-in-the-Loop**    | AI evaluates and recommends, you decide and act. The system never submits an application -- you always have the final call               |
-| **Pipeline Integrity**   | Automated merge, dedup, status normalization, health checks                                                                              |
+| Feature                   | Description                                                                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Auto-Pipeline**         | Paste a URL, get a full evaluation + PDF + tracker entry                                                                                                                 |
+| **6-Block Evaluation**    | Role summary, CV match, level strategy, comp research, personalization, interview prep (STAR+R) — plus a Block G posting-legitimacy check that flags scams and ghost jobs |
+| **🚀 I Need A Job Now!**   | Standalone entry-level blaster — finds junior/trainee/graduate/"willing to train" roles and auto-fills tailored applications                            |
+| **Interview Story Bank**  | Accumulates STAR+Reflection stories across evaluations — 5–10 master stories that answer any behavioral question                                                       |
+| **Negotiation Scripts**   | Salary negotiation frameworks, geographic discount pushback, competing-offer leverage                                                                                  |
+| **ATS PDF Generation**    | Keyword-injected CVs with Space Grotesk + DM Sans design                                                                                                                 |
+| **Cover Letter Generator**| Research-backed cover letters with keyword mirroring and A4 PDF via the same HTML + Playwright pipeline as CVs                                                          |
+| **Portal Scanner**        | 45+ companies pre-configured + custom queries across Ashby, Greenhouse, Lever, Wellfound                                                                                |
+| **Batch Processing**      | Parallel evaluation with headless CLI workers (`claude -p` / `opencode run`)                                                                                             |
+| **Dashboard TUI**         | Terminal UI to browse, filter, and sort your pipeline                                                                                                                    |
+| **Human-in-the-Loop**     | AI evaluates and recommends, you decide and act. The system never submits an application — you always have the final call                                               |
+| **Pipeline Integrity**    | Automated merge, dedup, status normalization, health checks                                                                                                              |
+
+<p align="center">
+  <img src="branding/demo.gif" alt="DAFE Career OS demo" width="800">
+</p>
+
+<p align="center"><strong>740+ job listings evaluated · 100+ personalized CVs · 1 dream role landed</strong></p>
+
+---
+
+## 🚀 I Need A Job Now! (One-Click Entry-Level Blaster)
+
+When you just need *a* job — any job — this mode finds roles anyone can apply to and fires tailored CVs + cover letters at them. It scans for **entry-level, junior, trainee, graduate, no-experience-needed, and "willing to train"** postings, generates a fully tailored CV + cover letter per role, and fills the application form.
+
+<p align="center">
+  <img src="branding/need-a-job-now-banner.png" alt="I Need A Job Now!" width="700">
+</p>
+
+**Easiest way — no terminal needed:** double-click **`Launch-DAFE-Career-OS.bat`**. It starts the app and opens your browser to the dashboard, where you click the big **🔥 I NEED A JOB NOW!** button. It scans, fills every application, and stages each one in the **Review Queue** tab — nothing is ever sent until you click Approve.
+
+Or run directly:
+
+```bash
+# Scans, fills forms, and stages every result in the Review Queue — this
+# never submits from the CLI. Open the dashboard's Review Queue to approve
+# (individually or in a batch) and actually send them.
+node need-a-job-now.mjs
+
+# Limit volume / time
+node need-a-job-now.mjs --max 15
+node need-a-job-now.mjs --hours 3
+
+# Skip the liveness check too — pure keyword gate
+node need-a-job-now.mjs --force --max 30
+```
+
+| Flag        | Effect                                                            |
+| ----------- | ------------------------------------------------------------------ |
+| `--max N`   | Process at most N jobs                                             |
+| `--hours N` | Run for at most N hours                                            |
+| `--force`   | Skip the liveness/legitimacy check — keyword gate only             |
+| `--verbose` | Verbose logging                                                    |
+
+> ⚠ **Safety:** Entry-level jobs are never scored against your senior/target-role fit rubric (wrong tool for "any job, right now") — they're gated by keyword match plus a liveness check instead. And nothing here ever submits by itself: every staged application waits in the dashboard's **Review Queue** for one explicit click, individually or as a batch. No flag anywhere in this project submits an application without that click.
+
+---
 
 ## Quick Start
 
 **Fastest way — one command:**
 
 ```bash
-npx @santifer/DAFE Career OS init
+npx dafe-career-os-init
 ```
 
-> 💡 `npx` ships with [Node.js](https://nodejs.org) — it runs the installer once,
-> without installing anything globally. No Node yet? Install it first.
-> (Already using a Claude Code / Gemini / Codex CLI? Then you already have it.)
+> 💡 `npx` ships with [Node.js](https://nodejs.org). It runs the installer once without installing anything globally. No Node yet? Install it first.
 
 This clones the latest release into `./dafe-career-os` and installs dependencies. Then:
 
@@ -131,14 +158,18 @@ cd dafe-career-os
 claude   # or gemini / codex / qwen / opencode / agy / grok — open your AI CLI here
 ```
 
-**On first launch, dafe-career-os walks you through setup — your CV, profile and target roles — just by chatting. Nothing to edit by hand.**
+**On first launch, DAFE Career OS walks you through setup — your CV, profile and target roles — just by chatting. Nothing to edit by hand.**
+
+<p align="center">
+  <img src="branding/setup-screenshot.png" alt="First-run onboarding" width="700">
+</p>
 
 <details>
 <summary><b>Prefer to set it up manually? (git clone)</b></summary>
 
 ```bash
-git clone https://github.com/santifer/DAFE Career OS.git
-cd dafe-career-os && npm install
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
+cd DAFE-Career-OS && npm install
 npx playwright install chromium   # only needed for PDF generation
 
 # 2. Check setup
@@ -162,34 +193,33 @@ claude   # or codex / opencode / gemini / qwen / agy / grok
 
 # 6. Start using
 # Paste a job URL or JD text to trigger auto-pipeline
-# If your CLI supports slash commands, use /dafe-career-os (or its CLI-specific alias)
-# In Codex, ask for the same mode in plain language, e.g.:
-# "Run the dafe-career-os scan mode"
-# "Run the dafe-career-os pipeline mode for data/pipeline.md"
-# "Run the dafe-career-os pdf mode for the latest evaluated role"
-# "Run the dafe-career-os tracker mode and summarize the current statuses"
 ```
 
 </details>
 
-> **The system is designed to be customized by your AI coding CLI itself.** Modes, archetypes, scoring weights, negotiation scripts -- just ask it to change them. It reads the same files it uses, so it knows exactly what to edit.
+> **The system is designed to be customized by your AI coding CLI itself.** Modes, archetypes, scoring weights, negotiation scripts — just ask it to change them.
 
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide, [docs/RUNNING_ON_A_BUDGET.md](docs/RUNNING_ON_A_BUDGET.md) for instructions on running dafe-career-os cheaply using custom or local models, and [docs/FAQ.md](docs/FAQ.md) for answers to common setup questions.
+See [docs/SETUP.md](docs/SETUP.md) for the full setup guide, [docs/RUNNING_ON_A_BUDGET.md](docs/RUNNING_ON_A_BUDGET.md) for running cheaply with custom/local models, and [docs/FAQ.md](docs/FAQ.md) for common questions.
 
-## Antigravity CLI Integration
+---
 
-DAFE Career OS supports Antigravity CLI natively, the same way it supports Claude Code and OpenCode. All slash commands are available through the shared skill entrypoint, using the same `modes/*.md` evaluation logic.
+## CLI Integrations
 
-Google has transitioned consumer Gemini CLI access to Antigravity CLI. `GEMINI.md` is now a no-op compatibility guard so Antigravity does not duplicate the full project instructions when it reads both `AGENTS.md` and `GEMINI.md`.
+DAFE Career OS supports every major agent-skill-standard CLI through one shared skill entrypoint (`.agents/skills/dafe-career-os/SKILL.md`), symlinked for each CLI.
 
-### Native Antigravity CLI
+### Native CLIs (slash commands)
 
 ```bash
-# 1. Run in the dafe-career-os directory
-cd dafe-career-os
-agy
+cd DAFE-Career-OS
+agy        # Antigravity CLI
+grok       # Grok Build CLI
+claude     # Claude Code
+opencode   # OpenCode
+```
 
-# 2. Use the unified /dafe-career-os command with subcommands:
+Use the unified command:
+
+```
 /dafe-career-os "Senior AI Engineer at Anthropic..."
 /dafe-career-os pipeline
 /dafe-career-os scan
@@ -197,88 +227,35 @@ agy
 /dafe-career-os tracker
 ```
 
-The skill is defined using the open standard in `.agents/skills/dafe-career-os/SKILL.md` and symlinked/referenced for each supported CLI (e.g. `.claude/`, `.qwen/`, `.antigravitycli/`, `.grok/`).
+### Codex (plain-language)
 
-## Codex Integration
-
-DAFE Career OS supports Codex through the same shared router, but the invocation model is different from CLIs that auto-register slash commands. For the full guide, see [docs/CODEX.md](docs/CODEX.md).
-
-### Interactive Codex
-
-```bash
-cd dafe-career-os
-codex
-```
-
-Slash commands are not guaranteed in Codex. If `/dafe-career-os` is unavailable, ask Codex to run the mode directly in plain language:
-
-```text
-Evaluate this JD with dafe-career-os auto-pipeline: https://company.com/jobs/123
-Run the dafe-career-os scan mode and summarize new matches.
-Run the dafe-career-os pipeline mode for data/pipeline.md.
-Run the dafe-career-os pdf mode for the latest evaluated role.
-Run the dafe-career-os tracker mode and summarize the current statuses.
-```
-
-### One-shot Codex (`codex exec`)
+Slash commands aren't guaranteed in Codex. Ask in plain language or use `codex exec`:
 
 ```bash
 codex exec "Evaluate this JD with dafe-career-os auto-pipeline: https://company.com/jobs/123"
-codex exec "Run dafe-career-os scan mode in this repo and summarize new matches."
-codex exec "Run dafe-career-os pipeline mode for data/pipeline.md."
-codex exec "Run dafe-career-os pdf mode for the latest evaluated role."
-codex exec "Run dafe-career-os tracker mode and summarize the current statuses."
+codex exec "Run dafe-career-os scan mode and summarize new matches."
 ```
 
-## Grok Build CLI Integration
-
-DAFE Career OS supports Grok Build CLI natively, the same way it supports Claude Code and OpenCode. `AGENTS.md` is auto-loaded as project rules, and all slash commands are available through the shared skill entrypoint.
-
-### Native Grok Build CLI
+### Standalone Gemini API Script (no CLI install)
 
 ```bash
-# 1. Run in the dafe-career-os directory
-cd dafe-career-os
-grok
-
-# 2. Use the unified /dafe-career-os command with subcommands:
-/dafe-career-os "Senior AI Engineer at Anthropic..."
-/dafe-career-os pipeline
-/dafe-career-os scan
-/dafe-career-os pdf
-/dafe-career-os tracker
-```
-
-For headless batch workers, use `grok -p "prompt"` (add `--yolo` to auto-approve tool executions).
-
-### Standalone Gemini API Script (No CLI install needed)
-
-```bash
-# 1. Get a free API key at https://aistudio.google.com/apikey
-cp .env.example .env
-# Edit .env, set GEMINI_API_KEY=your_key_here
-
-# 2. Install dependencies
+cp .env.example .env          # set GEMINI_API_KEY
 npm install
-
-# 3. Evaluate a job description
 node gemini-eval.mjs "We are looking for a Senior AI Engineer..."
-node gemini-eval.mjs --file ./jds/my-job.txt
-npm run gemini:eval -- "JD text here"
 ```
 
-> **Free tier:** Both options work without billing. Native CLI uses Google OAuth; the API script uses `gemini-2.5-flash` (15 RPM, 1M tokens/day free).
+> **Free tier:** Native CLI uses Google OAuth; the API script uses `gemini-3.5-flash` (free tier, no billing required — check [ai.google.dev](https://ai.google.dev/gemini-api/docs/models) for current rate limits, they change over time).
+
+---
 
 ## Usage
-
-DAFE Career OS uses a shared command router. In CLIs that register slash commands, it looks like this:
 
 ```
 /dafe-career-os                → Show all available commands
 /dafe-career-os {paste a JD}   → Full auto-pipeline (evaluate + PDF + tracker)
 /dafe-career-os scan           → Scan portals for new offers
 /dafe-career-os pdf            → Generate ATS-optimized CV
-/dafe-career-os cover          → Cover letter generator (paste JD or /dafe-career-os cover {slug})
+/dafe-career-os cover          → Cover letter generator
 /dafe-career-os batch          → Batch evaluate multiple offers
 /dafe-career-os tracker        → View application status
 /dafe-career-os apply          → Fill application forms with AI
@@ -289,9 +266,9 @@ DAFE Career OS uses a shared command router. In CLIs that register slash command
 /dafe-career-os project        → Evaluate a portfolio project
 ```
 
-Or just paste a job URL or description directly -- dafe-career-os auto-detects it and runs the full pipeline.
+Or just paste a job URL or description directly — DAFE Career OS auto-detects it and runs the full pipeline.
 
-In Codex, slash commands are not guaranteed. Use the same mode names in a prompt instead, or call them from `codex exec`.
+---
 
 ## How It Works
 
@@ -305,7 +282,7 @@ You paste a job URL or description
 └────────┬─────────┘
          │
 ┌────────▼─────────┐
-│  A-F Evaluation  │  Match, gaps, comp research, STAR stories
+│  A–F Evaluation  │  Match, gaps, comp research, STAR stories
 │  (reads cv.md)   │
 └────────┬─────────┘
          │
@@ -315,32 +292,59 @@ You paste a job URL or description
   .md   .pdf   .tsv
 ```
 
+---
+
 ## Pre-configured Portals
 
-The scanner comes with **45+ companies** ready to scan and **19 search queries** across major job boards. Copy `templates/portals.example.yml` to `portals.yml` and add your own:
+The scanner ships with **45+ companies** ready to scan and **19 search queries** across major job boards. Copy `templates/portals.example.yml` to `portals.yml` and add your own:
 
-**AI Labs:** Anthropic, OpenAI, Mistral, Cohere, LangChain, Pinecone
-**Voice AI:** ElevenLabs, PolyAI, Parloa, Hume AI, Deepgram, Vapi, Bland AI
-**AI Platforms:** Retool, Airtable, Vercel, Temporal, Glean, Arize AI
-**Contact Center:** Ada, LivePerson, Sierra, Decagon, Talkdesk, Genesys
-**Enterprise:** Salesforce, Twilio, Gong, Dialpad
-**LLMOps:** Langfuse, Weights & Biases, Lindy, Cognigy, Speechmatics
-**Automation:** n8n, Zapier, Make.com
-**European:** Factorial, Attio, Tinybird, Clarity AI, Travelperk
+- **AI Labs:** Anthropic, OpenAI, Mistral, Cohere, LangChain, Pinecone
+- **Voice AI:** ElevenLabs, PolyAI, Parloa, Hume AI, Deepgram, Vapi, Bland AI
+- **AI Platforms:** Retool, Airtable, Vercel, Temporal, Glean, Arize AI
+- **Contact Center:** Ada, LivePerson, Sierra, Decagon, Talkdesk, Genesys
+- **Enterprise:** Salesforce, Twilio, Gong, Dialpad
+- **LLMOps:** Langfuse, Weights & Biases, Lindy, Cognigy, Speechmatics
+- **Automation:** n8n, Zapier, Make.com
+- **European:** Factorial, Attio, Tinybird, Clarity AI, Travelperk
 
-**Job boards searched:** 21 provider modules cover ATS APIs, board-wide feeds, XML/RSS feeds, markdown feeds, and local parsers. See [Supported job boards](docs/SUPPORTED_JOB_BOARDS.md) for the full table.
+21 provider modules cover ATS APIs, board-wide feeds, XML/RSS feeds, markdown feeds, and local parsers. See [docs/SUPPORTED_JOB_BOARDS.md](docs/SUPPORTED_JOB_BOARDS.md).
 
-By default `node scan.mjs` (a.k.a. `npm run scan`) trusts what each ATS feed returns. Some companies leave stale postings in their public API even after the role is closed, so those expired entries can leak into `pipeline.md`. Pass `--verify` to launch Playwright after the API pass and drop expired postings before they hit the pipeline:
+Drop expired postings with a Playwright liveness check:
 
 ```bash
 node scan.mjs --verify          # zero-token discovery + Playwright liveness check
 ```
 
-The verification is sequential and only runs against new offers (after dedup), so the cost stays bounded.
+---
+
+## Web Dashboard (no terminal needed)
+
+This is the **recommended way to use DAFE Career OS** — a website that runs on your own computer. You click buttons; you never type commands.
+
+1. Double-click **`Launch-DAFE-Career-OS.bat`** (Windows) or run `node dashboard.mjs` (Mac/Linux).
+2. Your browser opens to **http://localhost:3456**.
+
+From the dashboard you can:
+
+- Click **🔥 I NEED A JOB NOW!** to scan entry-level roles and stage tailored applications for you.
+- Browse every job in a table with a per-row **Apply** button that fills and stages it.
+- Review every staged application in the **Review Queue** tab — approve individually or in a batch, or reject. A CAPTCHA/challenge on a listing is flagged there for you to solve yourself; nothing is ever auto-solved.
+- Search, filter, and sort your pipeline; change an application's status with one click.
+- Pick your **Job Focus** in Settings — a 20+ category starter catalog plus your own custom focuses — so the scanner looks for what you actually do, not just one hard-coded track.
+- Upload your **resume** (PDF, or paste text) directly in Settings — no dependency on LinkedIn access.
+- Choose your **LLM provider** in Settings: Gemini, OpenRouter, OpenAI, Anthropic, or Ollama (local, free — or Ollama Cloud with your own key).
+- Open the **War Room** for funnel stats, follow-ups due, and track performance.
+- Use **Continuous** mode to keep evaluating and staging automatically until the pipeline is empty.
+
+```bash
+node dashboard.mjs              # start the web dashboard on http://localhost:3456
+```
+
+> 💡 The dashboard fills every application form for you, but it never clicks Submit on its own — that only happens when you click Approve on a staged entry in the Review Queue, one job or a batch at a time.
 
 ## Dashboard TUI
 
-The built-in terminal dashboard lets you browse your pipeline visually:
+A built-in terminal dashboard is also available for browsing the pipeline visually:
 
 ```bash
 npm run serve:dashboard   # launch the TUI
@@ -349,98 +353,104 @@ npm run build:dashboard   # optional: build the standalone binary
 
 Features: 6 filter tabs, 4 sort modes, grouped/flat view, lazy-loaded previews, inline status changes.
 
+<p align="center">
+  <img src="branding/dashboard-screenshot.png" alt="Dashboard TUI" width="800">
+</p>
+
+---
+
 ## Project Structure
 
 ```
-dafe-career-os/
+DAFE-Career-OS/
 ├── AGENTS.md                    # Canonical agent instructions (all CLIs)
-├── CLAUDE.md                    # Claude Code wrapper (imports AGENTS.md)
-├── CODEX.md                     # Codex wrapper (imports AGENTS.md)
-├── OPENCODE.md                  # OpenCode wrapper (imports AGENTS.md)
-├── GEMINI.md                    # Legacy no-op guard to avoid Antigravity duplicate context
-├── cv.md                        # Your CV (create this)
-├── article-digest.md            # Your proof points (optional)
+├── CLAUDE.md / CODEX.md / OPENCODE.md / GEMINI.md   # CLI wrappers
+├── cv.md                        # Your CV (gitignored, you create it)
 ├── config/
 │   └── profile.example.yml      # Template for your profile
 ├── modes/                       # 15 skill modes
-│   ├── _shared.md               # Shared context (customize this)
+│   ├── _shared.md               # Shared context
 │   ├── oferta.md                # Single evaluation
-│   ├── pdf.md                   # PDF generation
-│   ├── cover.md                 # Cover letter generation
-│   ├── scan.md                  # Portal scanner
-│   ├── batch.md                 # Batch processing
-│   └── ...
-├── templates/
-│   ├── cv-template.html         # ATS-optimized CV template
-│   ├── portals.example.yml      # Scanner config template
-│   └── states.yml               # Canonical statuses
-├── batch/
-│   ├── batch-prompt.md          # Self-contained worker prompt
-│   └── batch-runner.sh          # Orchestrator script
+│   ├── pdf.md / cover.md        # PDF + cover letter generation
+│   ├── scan.md / batch.md       # Portal scanner + batch
+│   └── autonomous.md            # "I Need A Job Now!" mode
+├── templates/                   # CV/portal/state templates
+├── batch/                       # Batch worker prompt + runner
 ├── dashboard/                   # Go TUI pipeline viewer
-├── data/                        # Your tracking data (gitignored)
+├── data/                        # Tracking data (gitignored)
 ├── reports/                     # Evaluation reports (gitignored)
 ├── output/                      # Generated PDFs (gitignored)
-├── fonts/                       # Space Grotesk + DM Sans
-├── docs/                        # Setup, customization, budget guide, architecture
+├── branding/                    # Logos, banners, screenshots for this README
+├── docs/                        # Setup, customization, budget, architecture
 └── examples/                    # Sample CV, report, proof points
 ```
 
+---
+
 ## Tech Stack
 
-![Claude Code](https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)
-![Go](https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white)
-![Bubble Tea](https://img.shields.io/badge/Bubble_Tea-FF75B5?style=flat&logo=go&logoColor=white)
+- **Agent:** AI coding CLI with shared skills and modes (`AGENTS.md` + CLI wrapper)
+- **PDF:** Playwright + HTML template (Space Grotesk + DM Sans)
+- **Cover letters:** HTML template + Playwright (A4 PDF, same pipeline as CVs)
+- **Scanner:** Playwright + Greenhouse/Ashby/Lever APIs + WebSearch
+- **Dashboard:** Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
+- **Data:** Markdown tables + YAML config + TSV batch files
 
-- **Agent**: AI coding CLI with shared skills and modes (`AGENTS.md` + CLI wrapper)
-- **PDF**: Playwright/Puppeteer + HTML template
-- **Cover letters**: HTML template + Playwright (A4 PDF, same pipeline as CVs)
-- **Scanner**: Playwright + Greenhouse API + WebSearch
-- **Dashboard**: Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
-- **Data**: Markdown tables + YAML config + TSV batch files
+---
 
-## Also Open Source
+## Contributing
 
-- **[cv-santiago](https://github.com/santifer/cv-santiago)** -- The portfolio website (santifer.io) with AI chatbot, LLMOps dashboard, and case studies. If you need a portfolio to showcase alongside your job search, fork it and make it yours.
+We love contributions! 💙 Whether it's a bug fix, a new portal, a mode, or docs — see **[CONTRIBUTING.md](CONTRIBUTING.md)** for the full guide.
 
-## About the Author
+Quick start for contributors:
 
-I'm Santiago -- Head of Applied AI, former founder (built and sold a business that still runs with my name on it). I built dafe-career-os to manage my own job search. It worked: I used it to land my current role.
+```bash
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
+cd DAFE-Career-OS && npm install
+npm run doctor
+node test-all.mjs --quick   # run the test suite
+```
 
-My portfolio and other open source projects → [santifer.io](https://santifer.io)
+All PRs run `test-all.mjs` (855+ checks) via GitHub Actions. Branch protection requires status checks to pass before merge.
 
-## Disclaimer
+---
 
-**dafe-career-os is a local, open-source tool, NOT a hosted service.** By using this software, you acknowledge:
+## Code of Conduct
 
-1. **You control your data.** Your CV, contact info, and personal data stay on your machine and are sent directly to the AI provider you choose (Anthropic, OpenAI, etc.). We do not collect, store, or have access to any of your data.
-2. **You control the AI.** The default prompts instruct the AI not to auto-submit applications, but AI models can behave unpredictably. If you modify the prompts or use different models, you do so at your own risk. **Always review AI-generated content for accuracy before submitting.**
-3. **You comply with third-party ToS.** You must use this tool in accordance with the Terms of Service of the career portals you interact with (Greenhouse, Lever, Workday, LinkedIn, etc.). Do not use this tool to spam employers or overwhelm ATS systems.
-4. **No guarantees.** Evaluations are recommendations, not truth. AI models may hallucinate skills or experience. The authors are not liable for employment outcomes, rejected applications, account restrictions, or any other consequences.
+This project adheres to the **Contributor Covenant 2.1**. We are committed to a welcoming, harassment-free experience for everyone. Read the full text in **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)**.
 
-See [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md) for full details. This software is provided under the [MIT License](LICENSE) "as is", without warranty of any kind.
+By participating, you agree to uphold these standards. Report issues to the maintainers via GitHub Issues.
 
-## Contributors
-
-<a href="https://github.com/santifer/DAFE Career OS/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=santifer/DAFE Career OS" />
-</a>
-
-Got hired using dafe-career-os? [Share your story!](https://github.com/santifer/DAFE Career OS/issues/new?template=i-got-hired.yml)
+---
 
 ## License & Trademark
 
-The code is licensed under [MIT](LICENSE). The "dafe-career-os" name and
-brand are governed by the [Trademark Policy](TRADEMARK.md), permissive
-for community use, reserved for commercial product naming and
-endorsement.
+The code is licensed under the [MIT License](LICENSE). The "DAFE Career OS" name and brand are governed by the [Trademark Policy](TRADEMARK.md) — permissive for community use, reserved for commercial product naming and endorsement.
 
-## Let's Connect
+DAFE Career OS is an independent fork of **career-ops** (MIT) by Santiago Fernández de Valderrama (santifer). Upstream authorship is credited in [ATTRIBUTIONS.md](ATTRIBUTIONS.md). The original `LICENSE` copyright is preserved.
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
-[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/8pRpHETxa4)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hi@santifer.io)
+---
+
+## Disclaimer
+
+**DAFE Career OS is a local, open-source tool, NOT a hosted service.** By using this software, you acknowledge:
+
+1. **You control your data.** Your CV, contact info, and personal data stay on your machine and are sent directly to the AI provider you choose. We do not collect, store, or have access to any of your data.
+2. **You control the AI.** Default prompts instruct the AI not to auto-submit applications, but AI models can behave unpredictably. **Always review AI-generated content before submitting.**
+3. **You comply with third-party ToS.** Use this tool in accordance with the Terms of Service of the career portals you interact with. Do not spam employers or overwhelm ATS systems.
+4. **No guarantees.** Evaluations are recommendations, not truth. The authors are not liable for employment outcomes, rejected applications, or account restrictions.
+
+See [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md) for full details.
+
+---
+
+## About & Attribution
+
+DAFE Career OS is maintained by **DSKYZ-dev** (Shaun E. Lear). Originally forked from **career-ops** by santifer (MIT), this project has been rebranded and extended with new features including the autonomous entry-level application loop, LLM-tailored CV/cover-letter generation, and a live dashboard. See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for full details.
+
+<p align="center">
+  <a href="https://discord.gg/8pRpHETxa4"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
+  <a href="https://github.com/DSKYZ-dev/DAFE-Career-OS"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
+
+<p align="center"><sub>© 2026 DSKYZ-dev · Fork of career-ops (MIT) by santifer</sub></p>

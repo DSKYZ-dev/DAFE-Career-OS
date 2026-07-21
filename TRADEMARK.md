@@ -10,7 +10,7 @@ the source code.
 - **This policy covers the name and brand.** It's intentionally
   permissive for community use and reserved for commercial product
   naming and endorsement.
-- **In doubt? Ask.** hi@santifer.io, subject `Trademark request`.
+- **In doubt? Ask** via project issues.
 
 ## The relationship with the MIT license
 
@@ -65,7 +65,7 @@ use suggests an official relationship that doesn't exist, please ask.
 
 ## How to request permission
 
-Email **hi@santifer.io** with subject **"Trademark request — [your use case]"**
+Open a project issue with subject **"Trademark request — [your use case]"**
 and include:
 
 1. What you'd like to use the name for
@@ -102,8 +102,4 @@ will be announced in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-© 2026 Santiago Fernández de Valderrama. "dafe-career-os"™ is a trademark of
-Santiago Fernández de Valderrama. A trademark application has been filed
-with the Spanish Patent and Trademark Office (OEPM) in classes 9
-(downloadable software) and 42 (Software-as-a-Service); registration
-pending. International extensions under the Madrid Protocol may follow.
+"dafe-career-os" is a fork of the original project. Trademarks belong to their respective owners.

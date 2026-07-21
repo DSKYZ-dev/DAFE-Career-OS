@@ -1,9 +1,9 @@
 # dafe-career-os
 
-One-command installer for [**dafe-career-os**](https://github.com/santifer/DAFE Career OS) — the AI-powered job search pipeline built on Claude Code.
+One-command installer for [**dafe-career-os**](https://github.com/DSKYZ-dev/DAFE-Career-OS) — the AI-powered job search pipeline built on Claude Code.
 
 ```bash
-npx @santifer/DAFE Career OS init
+npx dafe-career-os-init
 ```
 
 This sets up a ready-to-use workspace:
@@ -18,10 +18,10 @@ The installer bootstraps CLI skill entrypoints after clone, so new CLIs (e.g. Gr
 ## Usage
 
 ```bash
-npx @santifer/DAFE Career OS init [folder]   # default folder: ./dafe-career-os
+npx dafe-career-os-init [folder]   # default folder: ./dafe-career-os
 ```
 
-Prefer the manual route? `git clone` still works exactly as before — see the [setup guide](https://github.com/santifer/DAFE Career OS/blob/main/docs/SETUP.md).
+Prefer the manual route? `git clone` still works exactly as before — see the [setup guide](https://github.com/DSKYZ-dev/DAFE-Career-OS/blob/main/docs/SETUP.md).
 
 ## Requirements
 
@@ -30,4 +30,4 @@ Prefer the manual route? `git clone` still works exactly as before — see the [
 
 ## License
 
-MIT © [Santiago Fernández de Valderrama](https://santifer.io)
+MIT © DAFE Career OS project maintainers

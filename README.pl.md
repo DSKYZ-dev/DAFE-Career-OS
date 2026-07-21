@@ -3,7 +3,7 @@
 [English](README.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [简体中文](README.cn.md) | [繁體中文](README.zh-TW.md) | [Українська](README.ua.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Dansk](README.da.md) | [العربية](README.ar.md)
 
 <p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="DAFE Career OS — Wieloagentowy system poszukiwania pracy" width="800"></a>
+  <img src="docs/hero-banner.jpg" alt="DAFE Career OS — Wieloagentowy system poszukiwania pracy" width="800">
 </p>
 
 <p align="center">
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/25195" target="_blank"><img src="https://trendshift.io/api/badge/repositories/25195" alt="santifer%2Fdafe-career-os | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/25195" target="_blank"><img src="https://trendshift.io/api/badge/repositories/25195" alt="DSKYZ-dev%2FDAFE-Career-OS | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </p>
 
 <p align="center"><sub>OBECNY W MEDIACH</sub></p>
@@ -71,7 +71,7 @@ DAFE Career OS działa agentowo: Claude Code nawiguje po stronach kariery z Play
 
 > **Uwaga: pierwsze oceny nie będą idealne.** System jeszcze cię nie zna. Dostarcz mu kontekstu — swoje CV, historię kariery, przykłady osiągnięć, preferencje, mocne strony, czego chcesz unikać. Im więcej mu dasz, tym lepiej działa. Traktuj to jak wdrożenie nowego rekrutera: w pierwszym tygodniu musi się nauczyć, kim jesteś — potem staje się nieoceniony.
 
-Zbudowany przez kogoś, kto użył go do oceny 740+ ofert pracy, wygenerowania 100+ spersonalizowanych CV i zdobycia roli Head of Applied AI. [Przeczytaj pełne case study](https://santifer.io/dafe-career-os-system).
+Zbudowany przez kogoś, kto użył go do oceny 740+ ofert pracy, wygenerowania 100+ spersonalizowanych CV i zdobycia roli Head of Applied AI. [Przeczytaj pełne case study](https://github.com/DSKYZ-dev/DAFE-Career-OS/dafe-career-os-system).
 
 ## Funkcje
 
@@ -93,7 +93,7 @@ Zbudowany przez kogoś, kto użył go do oceny 740+ ofert pracy, wygenerowania 1
 **Najszybszy sposób — jedno polecenie:**
 
 ```bash
-npx @santifer/DAFE Career OS init
+npx dafe-career-os-init init
 ```
 
 > 💡 `npx` jest dołączone do [Node.js](https://nodejs.org) — uruchamia instalator jednorazowo, bez instalowania czegokolwiek globalnie. Nie masz jeszcze Node.js? Najpierw go zainstaluj.
@@ -112,7 +112,7 @@ claude   # lub gemini / codex / qwen / opencode — otwórz tutaj swój AI CLI
 <summary><b>Wolisz skonfigurować ręcznie? (git clone)</b></summary>
 
 ```bash
-git clone https://github.com/santifer/DAFE Career OS.git
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
 cd dafe-career-os && npm install
 npx playwright install chromium   # wymagane tylko do generowania PDF
 claude   # otwórz swój AI CLI — przy pierwszym uruchomieniu przeprowadzi Cię przez onboarding
@@ -276,21 +276,21 @@ dafe-career-os/
 
 ## Również open source
 
-- **[cv-santiago](https://github.com/santifer/cv-santiago)** — Strona portfolio (santifer.io) z chatbotem AI, dashboardem LLMOps i case studies. Jeśli potrzebujesz portfolio do swojego poszukiwania pracy, sforkuj i dostosuj do siebie.
+- **[cv-santiago](https://github.com/DSKYZ-dev/DAFE-Career-OS)** — Strona portfolio (github.com/DSKYZ-dev/DAFE-Career-OS) z chatbotem AI, dashboardem LLMOps i case studies. Jeśli potrzebujesz portfolio do swojego poszukiwania pracy, sforkuj i dostosuj do siebie.
 
 ## O autorze
 
 Jestem Santiago — Head of Applied AI, były founder (zbudowałem i sprzedałem firmę, która nadal działa z moim nazwiskiem). Zbudowałem dafe-career-os do zarządzania własnym poszukiwaniem pracy. Zadziałało: użyłem go do zdobycia swojej obecnej roli.
 
-Moje portfolio i inne projekty open source → [santifer.io](https://santifer.io)
+Moje portfolio i inne projekty open source → [github.com/DSKYZ-dev/DAFE-Career-OS](https://github.com/DSKYZ-dev/DAFE-Career-OS)
 
 ## Historia gwiazdek
 
-<a href="https://www.star-history.com/?repos=santifer%2Fdafe-career-os&type=timeline&legend=top-left">
+<a href="https://www.star-history.com/?repos=DSKYZ-dev%2FDAFE-Career-OS&type=timeline&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=santifer/DAFE Career OS&type=timeline&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=santifer/DAFE Career OS&type=timeline&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=santifer/DAFE Career OS&type=timeline&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=DSKYZ-dev/DAFE-Career-OS&type=timeline&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=DSKYZ-dev/DAFE-Career-OS&type=timeline&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=DSKYZ-dev/DAFE-Career-OS&type=timeline&legend=top-left" />
  </picture>
 </a>
 
@@ -307,11 +307,11 @@ Szczegóły: [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md). Oprogramowanie jest udo
 
 ## Współtwórcy
 
-<a href="https://github.com/santifer/DAFE Career OS/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=santifer/DAFE Career OS" alt="Współtwórcy" />
+<a href="https://github.com/DSKYZ-dev/DAFE-Career-OS/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=DSKYZ-dev/DAFE-Career-OS" alt="Współtwórcy" />
 </a>
 
-Znalazłeś pracę dzięki dafe-career-os? [Podziel się swoją historią!](https://github.com/santifer/DAFE Career OS/issues/new?template=i-got-hired.yml)
+Znalazłeś pracę dzięki dafe-career-os? [Podziel się swoją historią!](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/new?template=i-got-hired.yml)
 
 ## Licencja i znak towarowy
 
@@ -319,8 +319,5 @@ Kod jest licencjonowany na [MIT](LICENSE). Nazwa i marka „dafe-career-os" są 
 
 ## Bądźmy w kontakcie
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/8pRpHETxa4)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hi@santifer.io)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DSKYZ-dev/DAFE-Career-OS)

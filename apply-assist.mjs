@@ -205,7 +205,7 @@ async function main() {
 
   console.log(`\nApply dashboard: ${htmlPath}`);
   console.log('Open in browser to see all jobs with Apply buttons.');
-  console.log('\n💡 TIP: Use DAFE-Career-OS.bat or open http://localhost:3456 for the visual dashboard with one-click pipeline.');
+  console.log('\n💡 TIP: Use dafe-career-os or open http://localhost:3456 for the visual dashboard with one-click pipeline.');
 
   // Try to open in default browser
   try {

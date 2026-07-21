@@ -385,11 +385,15 @@ Output JSON:
 
 // ─── Main Pipeline ───────────────────────────────────────────────
 
+// `autoSubmit` selects the apply MODE (headless fill+stage vs interactive
+// apply-assist dashboard) — nothing ever actually auto-submits from here;
+// every application still lands in the Review Queue for a human approval
+// click (see submit-application.mjs).
 async function runPipeline(maxJobs = 20, autoSubmit = false) {
   console.log('╔══════════════════════════════════════════════════════════════════╗');
   console.log('║          DAFE CAREER OS AUTOMATED PIPELINE                          ║');
   console.log('╚══════════════════════════════════════════════════════════════════╝');
-  console.log(`   Max jobs: ${maxJobs} | Auto-submit: ${autoSubmit ? 'YES' : 'NO (review mode)'}\n`);
+  console.log(`   Max jobs: ${maxJobs} | Apply mode: ${autoSubmit ? 'headless fill + stage' : 'interactive review dashboard'}\n`);
   
   const startTime = Date.now();
   
@@ -401,24 +405,24 @@ async function runPipeline(maxJobs = 20, autoSubmit = false) {
   console.log('\n📊 [5/5] Generating printable report...');
   execFileSync('node', ['generate-apply-report.mjs'], { cwd: ROOT, stdio: 'inherit', timeout: 30000 });
   
-  // Auto-apply if requested
+  // Fill & stage applications either way — nothing here ever submits.
+  // Approve staged entries in the dashboard's Review Queue to send them.
   if (autoSubmit) {
-    console.log('\n🚀 [Auto-submit enabled] Launching applications...');
-    await runApply(true);
+    console.log('\n📋 Filling & staging applications for review (nothing is submitted automatically)...');
+    await runApply();
   } else {
     console.log('\n📋 Launching apply dashboard for manual review...');
     await runApplyDashboard();
   }
-  
+
   const elapsed = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
   console.log(`\n✅ Pipeline complete in ${elapsed} minutes`);
 }
 
-async function runApply(autoSubmit = false) {
-  console.log('\n🚀 [4/5] Auto-applying to jobs...');
+async function runApply() {
+  console.log('\n📋 [4/5] Filling & staging applications for review...');
   const args = ['auto-apply.mjs', '--max', '10'];
-  if (autoSubmit) args.push('--auto-submit');
-  
+
   try {
     execFileSync('node', args, { cwd: ROOT, stdio: 'inherit', timeout: 600000 });
   } catch {}
@@ -442,7 +446,7 @@ async function cmdPrep(company, role, url) {
   const { interviewPrep } = await import('./interview-prep.mjs');
   await interviewPrep({ company, role, url });
 }
-async function cmdApply(max = 10, auto = false) { await runApply(auto); }
+async function cmdApply() { await runApply(); }
 async function cmdDashboard() { await runApplyDashboard(); }
 async function cmdReport() { execFileSync('node', ['generate-apply-report.mjs'], { cwd: ROOT, stdio: 'inherit' }); }
 async function cmdStatus() { await initRegistry(); console.log('\n=== Model Status ===\n'); console.log(JSON.stringify(registry.getStatus(), null, 2)); }
@@ -485,15 +489,15 @@ COMMANDS:
   --cv                   Generate tailored CV PDFs
   --cover                Generate cover letter PDFs
   --prep --company "X" --role "Y" [--url "..."]  Interview preparation
-  --apply [--max N] [--no-auto]  Auto-apply to jobs (--no-auto = review only)
-  --dashboard            Interactive apply dashboard (manual review)
+  --apply                Fill & stage applications (headless) — never submits; approve in the dashboard Review Queue
+  --dashboard            Interactive apply-assist dashboard (manual review)
   --report               Generate printable HTML report
   --status               Show available models (local + cloud)
-  --pipeline [--max N] [--no-auto]  Full pipeline: scan → evaluate → cv → cover → auto-apply
+  --pipeline [--max N] [--no-auto]  Full pipeline: scan → evaluate → cv → cover → fill & stage → report
 
 OPTIONS:
   --max N          Max jobs to process (default: 20)
-  --auto           Actually submit applications (default: auto-submit) -- use --no-auto for review mode
+  --no-auto        With --pipeline: use the interactive apply-assist dashboard instead of headless fill & stage
   --company "X"    Company name (for prep)
   --role "Y"       Role title (for prep)
   --url "..."      Job URL (for prep)
@@ -504,7 +508,8 @@ EXAMPLES:
   node career-orchestrator.mjs --scan
   node career-orchestrator.mjs --evaluate --max 20
   node career-orchestrator.mjs --prep --company "Acme Corp" --role "Support" --url "https://..."
-  node career-orchestrator.mjs --apply --max 5 --no-auto
+  node career-orchestrator.mjs --apply
+  node career-orchestrator.mjs --report
   node career-orchestrator.mjs --status
 `);
     process.exit(0);
@@ -516,7 +521,7 @@ EXAMPLES:
   else if (values.cv) await cmdCV();
   else if (values.cover) await cmdCover();
   else if (values.prep) await cmdPrep(values.company, values.role, values.url);
-  else if (values.apply) await cmdApply(values.max ? parseInt(values.max) : 10, !values.noAuto);
+  else if (values.apply) await cmdApply();
   else if (values.dashboard) await cmdDashboard();
   else if (values.report) await cmdReport();
   else if (values.status) await cmdStatus();

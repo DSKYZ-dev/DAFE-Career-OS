@@ -1,116 +1,159 @@
 # Contributing to DAFE Career OS
 
-Thanks for your interest in contributing! DAFE Career OS is built with Claude Code, and you can use it for development too.
+First off — thank you for taking the time to contribute! 💙 DAFE Career OS is a
+community project and every fix, portal, mode, and doc improvement makes the job
+search better for everyone.
 
-## Why contribute here
+The following is a set of guidelines (not rigid rules). Use your best judgment,
+and feel free to propose changes to this document in a pull request.
 
-dafe-career-os is a great place to make your **first open-source contribution** — and a great line on your résumé.
+## 📋 Table of Contents
 
-- **You already get it.** This is a job-search tool. If you're job-hunting, you understand the problem better than most — which makes you a better contributor.
-- **A real merged PR, on something people use.** 55K+ stars, shipping most weeks. Your name in the history of a real project, not a toy repo.
-- **We answer fast.** Open an issue or PR and you'll hear back, usually within a day or two. No black holes.
-- **Tiny on-ramps.** Browse [`good first issue`](https://github.com/santifer/DAFE Career OS/contribute) — each is scoped small, with a time estimate, the pattern to copy, and a clear "done", so your first PR is a win, not a maze.
-- **Your human work gets a real review.** We read every PR. We don't drown contributors in bot noise, and we don't merge AI-slop — put thought in, get thought back.
-- **A path forward.** Consistent, high-quality contributors get credited publicly and invited into bigger roles (reviewer, then maintainer).
+- [Code of Conduct](#code-of-conduct)
+- [How Can I Contribute?](#how-can-i-contribute)
+- [Reporting Bugs](#reporting-bugs)
+- [Suggesting Enhancements](#suggesting-enhancements)
+- [Your First Code Contribution](#your-first-code-contribution)
+- [Pull Request Process](#pull-request-process)
+- [Development Setup](#development-setup)
+- [Coding Standards](#coding-standards)
+- [Testing](#testing)
+- [Adding a Portal](#adding-a-portal)
+- [Adding a Mode](#adding-a-mode)
+- [Community & Governance](#community--governance)
 
-New to all this? That's the point. Claim an issue with a comment, ask anything in [Discord](https://discord.gg/8pRpHETxa4), and we'll help you land it.
+## Code of Conduct
 
-## Before Submitting a PR
+By participating, you agree to uphold the [Code of Conduct](CODE_OF_CONDUCT.md).
+Be kind, be respectful, and assume good intent.
 
-**For a new feature, a new mode or command, or an architecture change, please open an issue first.** It saves you from investing time in something we'd have to redirect, and lets us align on direction before you write code.
+## How Can I Contribute?
 
-**Going straight to a PR is welcome — no issue needed — for:** bug fixes, new zero-auth scanner providers, docs, and translations. Don't let process slow these down; these are the contributions we most want.
+### Reporting Bugs
 
-A large *feature* PR that skipped this step may be asked to start with an issue if it doesn't fit the architecture or roadmap — that's a scope conversation, never a judgment on your work.
+Before creating a bug report, please search the
+[existing issues](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues) to avoid
+duplicates. When you create a bug report, use the
+[bug report template](.github/ISSUE_TEMPLATE/bug_report.yml) and include as much
+detail as possible:
 
-### What makes a good PR
-- Fixes a bug listed in Issues
-- Addresses a feature request that was discussed and approved
-- Includes a clear description of what changed and why
-- Follows the existing code style and project philosophy (simple, minimal, quality over quantity)
+- A clear, descriptive title
+- Steps to reproduce (paste commands)
+- Expected vs. actual behavior
+- Your environment (`node --version`, OS, AI CLI used)
+- Relevant log output (redact any personal data!)
 
-## Quick Start
+### Suggesting Enhancements
 
-1. Open an issue to discuss your idea
-2. Fork the repo
-3. Create a branch (`git checkout -b feature/my-feature`)
-4. Make your changes
-5. Test with a fresh clone (see [docs/SETUP.md](docs/SETUP.md))
-6. Commit and push
-7. Open a Pull Request referencing the issue
+Enhancement suggestions are tracked as GitHub issues. Use the
+[feature request template](.github/ISSUE_TEMPLATE/feature_request.yml) and
+describe:
 
-## What to Contribute
+- The problem you're trying to solve
+- The proposed solution / behavior
+- Any alternatives you've considered
+- Mockups or examples if relevant
 
-**Good first contributions:**
-- Add companies to `templates/portals.example.yml`
-- Translate modes to other languages
-- Improve documentation
-- Add example CVs for different roles (in `examples/`)
-- Report bugs via [Issues](https://github.com/santifer/DAFE Career OS/issues)
+For larger changes, open an
+[RFC discussion](https://github.com/DSKYZ-dev/DAFE-Career-OS/discussions/categories/rfc)
+first so we can align before you invest time.
 
-**Bigger contributions:**
-- New evaluation dimensions or scoring logic
-- Dashboard TUI features (in `dashboard/`)
-- New skill modes (in `modes/`)
-- Script improvements (`.mjs` utilities)
+### Your First Code Contribution
 
-## The contribution ladder
+Good first contributions:
 
-There's a clear path here — we promote people who show up:
+- A new open-source **portal** in `templates/portals.example.yml`
+- A **bug fix** in any `.mjs` script
+- **Docs** improvements (setup, FAQ, translations)
+- **Tests** in `test-all.mjs`
+- A new **mode** under `modes/`
 
-1. **First-time contributor** — you landed a PR. Welcome aboard.
-2. **Trusted contributor** — a few solid merges; we fast-track your PRs and tag you on related work.
-3. **Reviewer** — you help triage and review others' PRs. We invite you.
-4. **Maintainer** — you help steer the project.
+Look for issues labeled `good first issue` or `help wanted`.
 
-We credit contributors publicly and invite high-signal folks up the ladder. Want to help more? Just say so in an issue.
+## Pull Request Process
 
-## Scope: the core vs. the shared layer
+1. **Fork** the repo and create your branch from `main`
+   (`git checkout -b fix/my-change`).
+2. **Set up** the dev environment (see below) and make sure `npm run doctor`
+   passes.
+3. **Make your change.** Keep PRs focused — one logical change per PR.
+4. **Test** with `node test-all.mjs --quick`. All checks must pass.
+5. **Update docs** if your change affects usage (README, `docs/`, modes).
+6. **Open the PR** against `main` using the PR template. Link the related issue.
+7. **CI** runs automatically (`test-all.mjs`, auto-labeler, welcome bot).
+   Address review feedback.
+8. A maintainer reviews and merges once checks pass and the change is aligned
+   with project direction.
 
-dafe-career-os core is **local-first and human-in-the-loop** by design — it runs on your machine and drafts applications for *you* to review and submit. Centralized infrastructure — hosted job aggregation, a shared matching service, proxies or Workers the project would operate — is **not part of the core**: it's heavier than a free local tool should carry, and it's where the project is headed as a *separate, opt-in service*. See the direction here: **[Where dafe-career-os is going](https://github.com/santifer/DAFE Career OS/discussions/904)**.
+> **Branch protection:** status checks must pass before merge. No direct pushes
+> to `main` (admin bypass only).
 
-Rule of thumb before you build: **provider modules, languages, CLI support, modes, dashboard, docs and fixes → the core.** Bigger centralized or automation ideas (a hosted layer, auto-apply, scraping infrastructure) → **start in that discussion**, so we can route them together instead of a large PR that can't merge.
-
-## Guidelines
-
-- Keep modes language-agnostic when possible (Claude handles both EN and ES)
-- Scripts should handle missing files gracefully (check `existsSync` before `readFileSync`)
-- Dashboard changes require a build (`npm run build:dashboard`) — test with real data before submitting
-- Don't commit personal data (cv.md, profile.yml, applications.md, reports/)
-
-## What we do NOT accept
-
-- **PRs that scrape platforms prohibiting automated access** (LinkedIn, etc.). We actively reject these to respect third-party ToS.
-- **PRs that enable auto-submitting applications** without human review. dafe-career-os is a decision-support tool, not a spam bot.
-- **PRs that add external API dependencies** without prior discussion in an issue.
-- **PRs that add centralized or hosted infrastructure to the core** (proxies, aggregation services, shared Workers). That's the separate opt-in service, not the open-core — bring it to the [direction discussion](https://github.com/santifer/DAFE Career OS/discussions/904) first.
-- **Integrations that send your data to a third-party service** — providers or sync features that require a third-party account or push your CV, pipeline, or notes out to an external service. dafe-career-os is local-first and zero-keys: your job-search data stays on your machine. Reading *public* job-listing APIs locally is welcome (that's how the built-in providers work); routing your personal data through someone else's service is not.
-- **PRs that add third-party hosted entry-points or service badges to the README** — links or embeds that route users' resumes or job data through a service the project doesn't operate. The README stays to assets the project controls, and the official online experience is something we keep first-party (see [The Vision](https://github.com/santifer/DAFE Career OS/discussions/156)). Projects built on dafe-career-os are welcome — share them in the [Discord](https://discord.gg/8pRpHETxa4) or Discussions, just not on the front page.
-- **PRs containing personal data** (real CVs, emails, phone numbers). Use `examples/` with fictional data instead.
-
-## Development
+## Development Setup
 
 ```bash
-# Scripts
-npm run doctor                # Setup validation
-node verify-pipeline.mjs     # Health check
-node cv-sync-check.mjs        # Config check
-
-# Dashboard
-npm run build:dashboard       # go build with platform-correct binary name
-npm run serve:dashboard       # launch the TUI against the repo root
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
+cd DAFE-Career-OS
+npm install
+npx playwright install chromium
+npm run doctor
 ```
 
-## Brand and Trademark
+Copy and edit your local config (these files are gitignored — your personal data
+never gets committed):
 
-Contributions to the codebase are governed by the MIT [LICENSE](LICENSE).
-The "dafe-career-os" name itself is governed by [TRADEMARK.md](TRADEMARK.md).
-If you fork the project for commercial use, you're welcome to do so
-under MIT — please give it your own product name and follow the
-trademark policy regarding commercial naming and endorsement claims.
+```bash
+cp config/profile.example.yml config/profile.yml
+cp templates/portals.example.yml portals.yml
+# create cv.md with your CV in markdown
+```
 
-## Need Help?
+## Coding Standards
 
-- [Join the Discord](https://discord.gg/8pRpHETxa4) — fastest way to get answers and connect with other contributors
-- [Open an issue](https://github.com/santifer/DAFE Career OS/issues)
-- [Read the architecture docs](docs/ARCHITECTURE.md)
+- **Language:** Node.js ES modules (`.mjs`). The dashboard is Go.
+- **Style:** 2-space indent, no semicolons-free debate — match the surrounding
+  file. Run `node --check <file>` before committing.
+- **No secrets:** Never commit API keys, `.env`, `cv.md`, `profile.yml`, or
+  `data/`. They are gitignored.
+- **Source of truth:** System-layer files (`AGENTS.md`, `modes/_shared.md`,
+  `*.mjs`, `templates/`, `dashboard/`) are auto-updatable. User-layer files
+  (`cv.md`, `config/profile.yml`, `modes/_profile.md`, `data/*`) are NEVER
+  auto-edited by the system — respect that boundary.
+- **Security:** PRs that introduce `child_process`, network calls, or file
+  writes are reviewed carefully. The agent never auto-submits applications.
+- **Attribution:** Keep the MIT `LICENSE` and `ATTRIBUTIONS.md` intact.
+
+## Testing
+
+The full suite has 855+ checks:
+
+```bash
+node test-all.mjs          # run everything
+node test-all.mjs --quick  # skip the dashboard Go build (faster)
+```
+
+Add regression tests for bug fixes. New modes/scripts should include at least a
+syntax + happy-path assertion.
+
+## Adding a Portal
+
+Edit `templates/portals.example.yml` and add a company under
+`tracked_companies` with its ATS board (Greenhouse/Ashby/Lever) URL, or add a
+search query under `search_queries`. Open a PR with the addition.
+
+## Adding a Mode
+
+1. Create `modes/your-mode.md` following the structure of `modes/oferta.md`.
+2. Register it in `AGENTS.md`'s Skill Modes table and the CLI skill entrypoint
+   (`.agents/skills/dafe-career-os/SKILL.md`).
+3. Add a short test or doc note.
+
+## Community & Governance
+
+- **Discord:** https://discord.gg/8pRpHETxa4 — questions, showcases, help
+- **Discussions:** RFCs, ideas, and Q&A on GitHub Discussions
+- **Governance:** BDFL model with a contributor ladder — Participant →
+  Contributor → Triager → Reviewer → Maintainer. See [GOVERNANCE.md](GOVERNANCE.md).
+- **Security:** report vulnerabilities via GitHub Issues (do not open public
+  issues for exploits — use the private reporting flow).
+
+Thank you for contributing! 🚀

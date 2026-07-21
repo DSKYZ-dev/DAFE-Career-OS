@@ -16,7 +16,7 @@ Run `node update-system.mjs check` and parse the JSON output.
 Show the user what will change. Run:
 
 ```bash
-git fetch https://github.com/santifer/DAFE Career OS.git main || {
+git fetch https://github.com/DSKYZ-dev/DAFE-Career-OS.git main || {
   echo "Failed to fetch latest changes. Cannot generate an accurate diff preview."
   exit 1
 }

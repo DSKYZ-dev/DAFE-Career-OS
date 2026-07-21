@@ -78,6 +78,6 @@ Broadly-useful, low/zero-key plugins may be promoted from listed to **bundled**
 
 - **Centralized infrastructure** the project would run (hosted aggregation,
   shared services, proxies) → a separate, opt-in service, see
-  [Discussion #904](https://github.com/santifer/DAFE Career OS/discussions/904).
+  [Discussion #904](https://github.com/DSKYZ-dev/DAFE-Career-OS/discussions/904).
 - **Auto-submitting / blind-applying** → out of the core everywhere. dafe-career-os
   drafts for you to review and submit; it is a decision-support tool, not a bot.

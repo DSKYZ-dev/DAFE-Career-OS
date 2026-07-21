@@ -6,8 +6,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
 )
 
 func tabIndexForFilter(t *testing.T, filter string) int {

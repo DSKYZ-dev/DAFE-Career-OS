@@ -17,7 +17,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 
 const MENU = `
 ╔══════════════════════════════════════════════════════════════════╗
-║                    DAFE CAREER OS LAUNCHER                          ║
+║                          LAUNCHER                                   ║
 ║              Automated Job Search & Application                 ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  SCAN & DISCOVER                                                ║
@@ -33,7 +33,7 @@ const MENU = `
 ║  DOCUMENTS & APPLY                                              ║
 ║  7) Generate CV     — Tailored CV PDF                          ║
 ║  8) Cover Letter    — Tailored cover letter PDF                ║
-║  9) Auto Apply      — Fill & submit applications (Playwright)  ║
+║  9) Auto Apply      — Fill & stage applications for review     ║
 ║  10) Apply Assist   — Dashboard to review & apply manually     ║
 ║                                                                 ║
 ║  REPORTS & TRACKING                                             ║
@@ -70,9 +70,11 @@ async function fullPipeline() {
     strict: false,
   });
   const max = values.max ? parseInt(values.max, 10) : 20;
-  const auto = values.autoSubmit ? '--auto-submit' : '';
+  if (values.autoSubmit) {
+    console.log('\n⚠ --auto-submit is ignored — applications are staged in the Review Queue and submitted only from the dashboard, after you approve them.');
+  }
   await runScript('auto-pipeline.mjs', ['--max', String(max)]);
-  if (auto) await runScript('auto-apply.mjs', ['--max', String(max), '--auto-submit']);
+  await runScript('auto-apply.mjs', ['--max', String(max)]);
 }
 
 async function quickScan() {
@@ -127,10 +129,10 @@ async function coverLetter() {
 async function autoApply() {
   const readline = await import('readline');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  const max = await new Promise(r => rl.question('\nMax applications (default 10): ', r));
-  const auto = await new Promise(r => rl.question('Auto-submit? (y/N): ', r));
+  const max = await new Promise(r => rl.question('\nMax applications to fill & stage (default 10): ', r));
   rl.close();
-  await runScript('auto-apply.mjs', ['--max', max || '10', auto.toLowerCase() === 'y' ? '--auto-submit' : '']);
+  console.log('Forms will be filled and staged in the dashboard Review Queue — nothing is submitted automatically. Approve staged entries there to send them.');
+  await runScript('auto-apply.mjs', ['--max', max || '10']);
 }
 
 async function applyAssist() {

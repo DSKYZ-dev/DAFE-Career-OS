@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 /**
  * cloud-eval.mjs — Cloud-based Job Offer Evaluator for dafe-career-os
- * Supports: OpenRouter, OpenAI, Anthropic, Gemini
- * 
+ * Supports: OpenRouter, OpenAI, Anthropic, Gemini, Ollama (local or cloud)
+ *
  * Usage:
  *   node cloud-eval.mjs --file ./jds/job.txt
- *   node cloud-eval.mjs --provider gemini --model gemini-2.5-flash "JD text"
- * 
+ *   node cloud-eval.mjs --provider gemini --model gemini-3.5-flash "JD text"
+ *   node cloud-eval.mjs --provider ollama --model gpt-oss:120b "JD text"
+ *
  * Set API keys in .env:
  *   OPENROUTER_API_KEY=sk-or-...
  *   OPENAI_API_KEY=sk-...
  *   ANTHROPIC_API_KEY=sk-ant-...
  *   GEMINI_API_KEY=...
+ *   OLLAMA_API_KEY=...        # optional — omit for local Ollama, set for Ollama Cloud
  */
 
 import { readFileSync, existsSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
@@ -45,11 +47,11 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
   USAGE
     node cloud-eval.mjs "<JD text>"
     node cloud-eval.mjs --file ./jds/my-job.txt
-    node cloud-eval.mjs --provider gemini --model gemini-2.5-flash "JD text"
+    node cloud-eval.mjs --provider gemini --model gemini-3.5-flash "JD text"
 
   OPTIONS
     --file <path>     Read JD from file
-    --provider <name> Provider: openrouter | openai | anthropic | gemini (default: openrouter)
+    --provider <name> Provider: openrouter | openai | anthropic | gemini | ollama (default: openrouter)
     --model <name>    Model name (provider-specific)
     --no-save         Do not save report
 
@@ -58,9 +60,11 @@ if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
     OPENAI_API_KEY=sk-...          # platform.openai.com
     ANTHROPIC_API_KEY=sk-ant-...   # console.anthropic.com
     GEMINI_API_KEY=...             # aistudio.google.com
+    OLLAMA_API_KEY=...             # ollama.com — omit entirely to use local Ollama instead
 
   RECOMMENDED FREE MODELS:
-    Gemini free tier (default): gemini-2.5-flash   (set CLOUD_PROVIDER=gemini)
+    Gemini free tier (default): gemini-3.5-flash   (set CLOUD_PROVIDER=gemini)
+    Ollama: free if run locally (ollama serve); Ollama Cloud is GPU-time billed, not free
     NOTE: OpenRouter ':free' models were retired — use a paid OpenRouter slug or Gemini.
 
   EXAMPLES
@@ -100,7 +104,8 @@ const DEFAULT_MODELS = {
   openrouter: 'meta-llama/llama-3.1-8b-instruct',
   openai: 'gpt-4o-mini',
   anthropic: 'claude-3-haiku-20240307',
-  gemini: 'gemini-2.5-flash',
+  gemini: 'gemini-3.5-flash',
+  ollama: 'gpt-oss:120b',
 };
 
 // Premium models (require payment)
@@ -115,10 +120,13 @@ const API_KEYS = {
   openai: process.env.OPENAI_API_KEY,
   anthropic: process.env.ANTHROPIC_API_KEY,
   gemini: process.env.GEMINI_API_KEY,
+  ollama: process.env.OLLAMA_API_KEY, // optional — unset means "use local Ollama"
 };
 
 const apiKey = API_KEYS[provider];
-if (!apiKey) {
+// Ollama is the one provider that works with no key at all (local instance via
+// `ollama serve`) — every other provider is a hosted API and needs one.
+if (!apiKey && provider !== 'ollama') {
   console.error(`❌  No API key for ${provider}. Set ${provider.toUpperCase()}_API_KEY in .env`);
   process.exit(1);
 }
@@ -240,6 +248,33 @@ async function callProvider() {
       const model = genAI.getGenerativeModel({ model: modelName });
       const result = await model.generateContent(`${basePrompts.system}\n\n${basePrompts.user}`);
       return result.response.text();
+    }
+    case 'ollama': {
+      // With an OLLAMA_API_KEY set, hit Ollama Cloud directly (ollama.com acts
+      // as a remote Ollama host — https://docs.ollama.com/cloud). Without one,
+      // talk to a local `ollama serve` instance instead — same request shape.
+      const url = apiKey ? 'https://ollama.com/api/chat' : 'http://127.0.0.1:11434/api/chat';
+      const headers = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: modelName,
+          messages: [
+            { role: 'system', content: basePrompts.system },
+            { role: 'user', content: basePrompts.user },
+          ],
+          stream: false,
+        }),
+        signal: AbortSignal.timeout(180000),
+      });
+      if (!res.ok) {
+        const hint = apiKey ? '' : ' — is `ollama serve` running? (or set OLLAMA_API_KEY to use Ollama Cloud instead)';
+        throw new Error(`Ollama ${res.status}: ${await res.text()}${hint}`);
+      }
+      const data = await res.json();
+      return data.message.content;
     }
     default:
       throw new Error(`Unknown provider: ${provider}`);

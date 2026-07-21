@@ -5,30 +5,33 @@
  * Supports: Greenhouse, Lever, Workday, Ashby, and generic ATS
  * Fills form fields with candidate data, uploads CV + cover letter
  * 
+ * This script only ever FILLS forms and stages them in the Review Queue
+ * (review-queue.mjs) — it never clicks Submit. Approving a staged entry in
+ * the dashboard is the only way an application actually gets submitted (see
+ * submit-application.mjs). --auto-submit is accepted for backwards
+ * compatibility but ignored.
+ *
  * Usage:
- *   node auto-apply.mjs --max 10              # Process pipeline, fill forms (no submit)
- *   node auto-apply.mjs --max 10 --auto-submit  # Actually submit applications
- *   node auto-apply.mjs --url "..." --auto-submit  # Single URL
+ *   node auto-apply.mjs --max 10              # Process pipeline, fill + stage
+ *   node auto-apply.mjs --url "..."            # Single URL, fill + stage
  *   node auto-apply.mjs --provider greenhouse --max 5  # Filter by ATS
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import { chromium } from 'playwright';
+import { writeQueueEntry } from './review-queue.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const PIPELINE_PATH = join(ROOT, 'data', 'pipeline.md');
 const OUTPUT_DIR = join(ROOT, 'output');
 const LOG_DIR = join(ROOT, 'logs');
 const PROFILE_PATH = join(ROOT, 'config', 'profile.yml');
-const TRACKER_DIR = join(ROOT, 'batch', 'tracker-additions');
-const REPORTS_DIR = join(ROOT, 'reports');
 
 mkdirSync(OUTPUT_DIR, { recursive: true });
 mkdirSync(LOG_DIR, { recursive: true });
-mkdirSync(TRACKER_DIR, { recursive: true });
 
 // Load candidate profile
 import yaml from 'js-yaml';
@@ -42,37 +45,6 @@ try {
     if (s[k] !== undefined && s[k] !== '') CANDIDATE[k] = s[k];
   }
 } catch {}
-
-// Get next report number for tracker
-function getNextNum() {
-  let max = 0;
-  try {
-    const files = readdirSync(REPORTS_DIR);
-    for (const f of files) {
-      const m = f.match(/^(\d+)-/);
-      if (m) max = Math.max(max, parseInt(m[1], 10));
-    }
-  } catch {}
-  try {
-    const files = readdirSync(TRACKER_DIR);
-    for (const f of files) {
-      if (f === 'merged' || f === '.gitkeep') continue;
-      const m = f.match(/^(\d+)-/);
-      if (m) max = Math.max(max, parseInt(m[1], 10));
-    }
-  } catch {}
-  return max + 1;
-}
-
-// Write tracker TSV entry for submitted application
-function writeTrackerEntry(job, slug) {
-  const num = getNextNum();
-  const date = new Date().toISOString().slice(0, 10);
-  const tsvFile = `${String(num).padStart(3, '0')}-${slug}.tsv`;
-  const tsv = `${num}\t${date}\t${job.company}\t${job.role}\tApplied\t/5\t✅\t[${num}](reports/${String(num).padStart(3, '0')}-${slug}-${date}.md)\tAuto-submitted via auto-apply.mjs`;
-  writeFileSync(join(TRACKER_DIR, tsvFile), tsv + '\n', 'utf-8');
-  console.log(`    ✓ Tracker: ${tsvFile}`);
-}
 
 // Build a company -> score map from data/applications.md for fit-ranking.
 function loadApplicationScores() {
@@ -306,7 +278,45 @@ function splitName(candidate) {
   return { first: parts[0] || '', last: parts.slice(1).join(' ') };
 }
 
+// CAPTCHA/bot-challenge DETECTION only — this never attempts to solve or
+// bypass anything. If one is found, the caller stops before the submit
+// click and the job gets flagged for the human to solve themselves.
+const CHALLENGE_SELECTORS = [
+  'iframe[src*="recaptcha"]', 'iframe[src*="hcaptcha"]',
+  'iframe[src*="challenges.cloudflare.com"]', 'iframe[title*="challenge" i]',
+  '.g-recaptcha', '#g-recaptcha-response', '[data-sitekey]',
+  '.h-captcha', '[class*="cf-turnstile"]',
+];
+const CHALLENGE_TEXT_RE = /verify you are human|i.?m not a robot|security check|prove you.?re human/i;
+
+async function detectChallenge(page) {
+  const checkCtx = async (ctx) => {
+    for (const sel of CHALLENGE_SELECTORS) {
+      try { if (await ctx.$(sel)) return true; } catch {}
+    }
+    try {
+      const text = await ctx.evaluate(() => document.body?.innerText || '');
+      if (CHALLENGE_TEXT_RE.test(text)) return true;
+    } catch {}
+    return false;
+  };
+  if (await checkCtx(page)) return { detected: true, note: 'Challenge detected on the main page' };
+  for (const frame of page.frames()) {
+    if (await checkCtx(frame)) return { detected: true, note: 'Challenge detected in an embedded frame' };
+  }
+  return { detected: false, note: null };
+}
+
 async function applyToJob(page, url, candidate, cvPath, coverPath, autoSubmit = false) {
+  // Defense in depth: the ONLY caller ever allowed to pass autoSubmit=true is
+  // submit-application.mjs, which sets this env var on itself right before
+  // calling in — and only after a human clicked Approve in the dashboard. Any
+  // other caller hitting this (a future bug re-hardcoding `true` somewhere,
+  // the exact class of bug that made every apply path here blind-submit
+  // before this fix) crashes loudly instead of silently clicking Submit.
+  if (autoSubmit && process.env.DAFE_SUBMIT_APPROVED !== '1') {
+    throw new Error('applyToJob(autoSubmit=true) called outside the approved submit-application.mjs flow — refusing to click Submit.');
+  }
   const ats = detectATS(url);
   console.log(`  [ATS: ${ats}] ${url}`);
   
@@ -360,13 +370,29 @@ async function applyToJob(page, url, candidate, cvPath, coverPath, autoSubmit = 
   if (filledCount < 3) {
     return { success: false, reason: 'Too few fields filled - form may need manual handling', ats, filled: filledCount };
   }
-  
-  if (!autoSubmit) {
-    console.log(`  ⏸ Auto-submit disabled. Form filled. Review in browser.`);
-    return { success: false, reason: 'Auto-submit disabled - form ready for manual review', ats, filled: filledCount, ready: true };
+
+  const challenge = await detectChallenge(page);
+  if (challenge.detected) {
+    console.log(`  ⚠ CAPTCHA/challenge detected — not solving it, not submitting. ${challenge.note}`);
+    return { success: false, reason: 'CAPTCHA/challenge detected', ats, filled: filledCount, ready: true, needsManualSolve: true, captchaNote: challenge.note };
   }
-  
-  // Auto-submit
+
+  if (!autoSubmit) {
+    console.log(`  ⏸ Form filled and staged. Approve it in the dashboard's Review Queue to submit.`);
+    return { success: false, reason: 'Staged for review', ats, filled: filledCount, ready: true };
+  }
+
+  // Re-check immediately before the irreversible click — approval can land
+  // well after staging, and a challenge can appear (or still be unsolved)
+  // between fill time and click time.
+  const preSubmitChallenge = await detectChallenge(page);
+  if (preSubmitChallenge.detected) {
+    console.log(`  ⚠ CAPTCHA/challenge present at submit time — not clicking Submit. ${preSubmitChallenge.note}`);
+    return { success: false, reason: 'CAPTCHA/challenge detected', ats, filled: filledCount, ready: true, needsManualSolve: true, captchaNote: preSubmitChallenge.note };
+  }
+
+  // Auto-submit — only reached with autoSubmit=true, which the guard at the
+  // top of this function already confirmed came from an approved click.
   for (const selector of fields.submit) {
     try {
       const btn = await findInContexts(page, selector);
@@ -384,11 +410,11 @@ async function applyToJob(page, url, candidate, cvPath, coverPath, autoSubmit = 
       // Try next selector
     }
   }
-  
+
   return { success: false, reason: 'Submit button not found', ats, filled: filledCount };
 }
 
-async function processPipeline(maxJobs = 10, autoSubmit = false, filterATS = null) {
+async function processPipeline(maxJobs = 10, filterATS = null) {
   const lines = readFileSync(PIPELINE_PATH, 'utf-8').split('\n');
   const pending = [];
   
@@ -443,17 +469,26 @@ async function processPipeline(maxJobs = 10, autoSubmit = false, filterATS = nul
     }
     
     try {
-      const result = await applyToJob(page, job.url, CANDIDATE, 
+      const result = await applyToJob(page, job.url, CANDIDATE,
         existsSync(cvPath) ? cvPath : null,
         existsSync(coverPath) ? coverPath : null,
-        autoSubmit
+        false // this script only ever fills + stages; see submit-application.mjs
       );
-      
-      // Track successful submissions
-      if (result.success) {
-        writeTrackerEntry(job, slug);
+
+      // Stage a successfully-filled form for human review — nothing here
+      // ever submits. Applied status only ever gets set by submit-application.mjs.
+      if (result.ready) {
+        writeQueueEntry({
+          company: job.company, role: job.role, url: job.url, ats: result.ats,
+          fitScore: scoreMap.get((job.company || '').toLowerCase()) ?? null,
+          cvPath: existsSync(cvPath) ? cvPath : null,
+          coverPath: existsSync(coverPath) ? coverPath : null,
+          filledCount: result.filled, totalFields: 8,
+          needsManualSolve: !!result.needsManualSolve, captchaNote: result.captchaNote || null,
+          source: 'auto-apply',
+        });
       }
-      
+
       results.push({ ...job, ...result, timestamp: new Date().toISOString() });
       
       // Log to file
@@ -474,15 +509,16 @@ async function processPipeline(maxJobs = 10, autoSubmit = false, filterATS = nul
   console.log('\n' + '='.repeat(60));
   console.log('AUTO-APPLY SUMMARY');
   console.log('='.repeat(60));
-  const submitted = results.filter(r => r.success).length;
-  const ready = results.filter(r => r.ready).length;
+  const ready = results.filter(r => r.ready && !r.needsManualSolve).length;
+  const needsSolve = results.filter(r => r.needsManualSolve).length;
   const errors = results.filter(r => r.status === 'error').length;
   const skipped = results.filter(r => r.status === 'skipped').length;
-  
-  console.log(`  Submitted: ${submitted}`);
-  console.log(`  Ready for review: ${ready}`);
+
+  console.log(`  Staged for review: ${ready}`);
+  console.log(`  Needs manual CAPTCHA solve: ${needsSolve}`);
   console.log(`  Errors: ${errors}`);
   console.log(`  Skipped: ${skipped}`);
+  console.log(`  → Open the dashboard's Review Queue to approve and actually submit.`);
   
   return results;
 }
@@ -503,33 +539,56 @@ async function main() {
     console.log(`
 Usage: node auto-apply.mjs [options]
 
+Fills forms and stages them in the Review Queue. Never submits — approve a
+staged entry in the dashboard to actually submit (see submit-application.mjs).
+
 Options:
   --max N           Max jobs to process (default: 10)
-  --auto-submit     Actually click Submit (default: fills only, pauses for review)
   --url "..."       Apply to single URL instead of pipeline
   --provider ATS    Filter by ATS: greenhouse, lever, workday, ashby, etc.
   --help            Show this help
 
 Examples:
   node auto-apply.mjs --max 20
-  node auto-apply.mjs --url "https://company.greenhouse.io/jobs/123" --auto-submit
-  node auto-apply.mjs --provider greenhouse --max 10 --auto-submit
+  node auto-apply.mjs --url "https://company.greenhouse.io/jobs/123"
+  node auto-apply.mjs --provider greenhouse --max 10
 `);
     process.exit(0);
   }
-  
+
+  if (args.autoSubmit) {
+    console.log('⚠ --auto-submit is ignored — applications are staged in the Review Queue and submitted only from the dashboard, after you approve them.\n');
+  }
+
   const maxJobs = args.max ? parseInt(args.max, 10) : 10;
-  const autoSubmit = args.autoSubmit === true;
-  
+
   if (args.url) {
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
-    const result = await applyToJob(page, args.url, CANDIDATE, null, null, autoSubmit);
+    const result = await applyToJob(page, args.url, CANDIDATE, null, null, false);
     console.log('\nResult:', result);
+    if (result.ready) {
+      const job = { company: '(single URL)', role: '', url: args.url };
+      writeQueueEntry({
+        company: job.company, role: job.role, url: job.url, ats: result.ats,
+        filledCount: result.filled, totalFields: 8,
+        needsManualSolve: !!result.needsManualSolve, captchaNote: result.captchaNote || null,
+        source: 'auto-apply-single-url',
+      });
+      console.log('Staged for review — open the dashboard Review Queue to approve.');
+    }
     await browser.close();
   } else {
-    await processPipeline(maxJobs, autoSubmit, args.provider);
+    await processPipeline(maxJobs, args.provider);
   }
 }
 
-main().catch(err => { console.error('Fatal:', err); process.exit(1); });
+// Only run the CLI when this file is executed directly — other scripts
+// (autonomous-loop.mjs, submit-application.mjs) import applyToJob without
+// wanting a full pipeline run to fire as a side effect of the import.
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  main().catch(err => { console.error('Fatal:', err); process.exit(1); });
+}
+
+export { applyToJob };

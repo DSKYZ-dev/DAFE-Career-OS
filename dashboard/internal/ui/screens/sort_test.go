@@ -3,8 +3,8 @@ package screens
 import (
 	"testing"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
 )
 
 func TestSortCycleIncludesNewColumns(t *testing.T) {

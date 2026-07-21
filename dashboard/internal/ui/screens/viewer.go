@@ -11,9 +11,9 @@ import (
 	"github.com/charmbracelet/lipgloss/table"
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/data"
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/data"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
 )
 
 // ViewerClosedMsg is emitted when the viewer is dismissed.

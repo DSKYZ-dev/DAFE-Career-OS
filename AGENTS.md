@@ -1,10 +1,12 @@
-# DAFE Career OS -- AI Job Search Pipeline
+# DAFE Career OS — AI Job Search Pipeline
 
 ## Origin
 
-This system was built and used by [santifer](https://santifer.io) to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role. The archetypes, scoring logic, negotiation scripts, and proof point structure all reflect his specific career search in AI/automation roles.
+This system is a fork of the original **career-ops** (MIT) by [santifer](https://santifer.io). The original evaluated 740+ jobs, generated 100+ tailored CVs, and helped land a Head of Applied AI role. The architectural patterns (evaluation framework, provider-based scanning, pipeline model) are derived from that project.
 
-The portfolio that goes with this system is also open source: [cv-santiago](https://github.com/santifer/cv-santiago).
+**This fork is an independent project with substantial extensions:** dashboard with live SSE streaming, auto-apply browser automation (Greenhouse/Lever/Ashby/Workday/generic ATS), autonomous entry-level application loop, LLM-based tailored CV/cover letter generation, dual-stack networking reliability, stale-process recovery, custom modes, and scoring adjustments. See `ATTRIBUTIONS.md` for the full attribution.
+
+The archetypes, scoring logic, negotiation scripts, and proof point structure from the original project serve as a starting point — they are all customizable by editing `config/profile.yml` or `modes/_profile.md`.
 
 **It will work out of the box, but it's designed to be made yours.** If the archetypes don't match your career, the modes are in the wrong language, or the scoring doesn't fit your priorities -- just ask. You (AI Agent) can edit the user's files. The user says "change the archetypes to data engineering roles" and you do it. That's the whole point.
 

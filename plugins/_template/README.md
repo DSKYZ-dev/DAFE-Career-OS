@@ -1,6 +1,6 @@
 # dafe-career-os-plugin-{{NAME}}
 
-A community plugin for [dafe-career-os](https://github.com/santifer/DAFE Career OS).
+A community plugin for [dafe-career-os](https://github.com/DSKYZ-dev/DAFE-Career-OS).
 
 ## What it does
 
@@ -31,7 +31,7 @@ node plugins.mjs enable {{NAME}} --confirm  # grants it
 ## Get it listed as approved
 
 Open a registry PR against dafe-career-os (see
-[docs/PLUGINS.md](https://github.com/santifer/DAFE Career OS/blob/main/docs/PLUGINS.md)).
+[docs/PLUGINS.md](https://github.com/DSKYZ-dev/DAFE-Career-OS/blob/main/docs/PLUGINS.md)).
 
 ## License
 

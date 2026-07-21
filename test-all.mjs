@@ -553,8 +553,8 @@ if (
 console.log('\n6. Personal data leak check');
 
 const leakPatterns = [
-  'Santiago', 'santifer.io', 'Santifer iRepair', 'Zinkee', 'ALMAS',
-  'hi@santifer.io', '688921377', '/Users/santifer/',
+  'Shaun', 'github.com/DSKYZ-dev', 'DSKYZ', 'Zinkee', 'ALMAS',
+  'hi@dskyz.dev', '0000000000', '/Users/dskyz/',
 ];
 
 const scanExtensions = ['md', 'yml', 'html', 'mjs', 'sh', 'go', 'json'];

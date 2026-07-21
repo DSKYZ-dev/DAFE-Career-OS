@@ -5,9 +5,7 @@ type: software
 authors:
   - family-names: "Fernández de Valderrama"
     given-names: "Santiago"
-    website: "https://santifer.io"
-url: "https://santifer.io"
-repository-code: "https://github.com/santifer/DAFE Career OS"
+repository-code: "https://github.com/DSKYZ-dev/DAFE-Career-OS"
 license: MIT
 keywords:
   - ai

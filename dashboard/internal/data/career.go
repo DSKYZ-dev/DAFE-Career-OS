@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
 )
 
 var (

@@ -1,4 +1,4 @@
-module github.com/santifer/dafe-career-os/dashboard
+module github.com/DSKYZ-dev/DAFE-Career-OS/dashboard
 
 go 1.24.2
 

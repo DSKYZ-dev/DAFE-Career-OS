@@ -6,7 +6,7 @@ This file lists who maintains dafe-career-os and how contributors grow into revi
 
 | Role | Who | Areas |
 |------|-----|-------|
-| Lead maintainer | [@santifer](https://github.com/santifer) | All areas; final say on architecture, scoring, and the data contract |
+| Lead maintainer | [@DSKYZ-dev](https://github.com/DSKYZ-dev) | All areas; final say on architecture, scoring, and the data contract |
 
 Reviewers and additional maintainers are added as the contributor ladder below produces them. If you're reviewing this and the list is short — that's the honest current state, and the ladder is how it grows.
 
@@ -15,7 +15,7 @@ Reviewers and additional maintainers are added as the contributor ladder below p
 DAFE Career OS grows its team in the open. There are three rungs:
 
 ### 1. Contributor
-Anyone who opens a PR or a helpful issue. No permissions needed — just contribute. Good first contributions: a new open-API scanner provider (`providers/`), a translation, a docs fix, or a [good first issue](https://github.com/santifer/DAFE Career OS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). See [CONTRIBUTING.md](CONTRIBUTING.md).
+Anyone who opens a PR or a helpful issue. No permissions needed — just contribute. Good first contributions: a new open-API scanner provider (`providers/`), a translation, a docs fix, or a [good first issue](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### 2. Reviewer
 Trusted contributors who help triage and review incoming PRs. A reviewer is invited after a track record of **several merged, high-quality PRs** across more than one area, plus consistently helpful review comments on others' PRs. Reviewers help label, reproduce, and give first-pass feedback; merges still go through a maintainer.
@@ -46,7 +46,7 @@ Because dafe-career-os handles people's personal career data, access is granted 
 ## Decision-making
 
 - Day-to-day: lowest-friction path — a maintainer reviews and merges.
-- Significant or breaking changes: an [RFC](https://github.com/santifer/DAFE Career OS/discussions/categories/rfc) first (see [CONTRIBUTING.md](CONTRIBUTING.md) → "Proposing big changes").
+- Significant or breaking changes: an [RFC](https://github.com/DSKYZ-dev/DAFE-Career-OS/discussions/categories/rfc) first (see [CONTRIBUTING.md](CONTRIBUTING.md) → "Proposing big changes").
 - Architecture, scoring rules, and the data contract: lead maintainer has final say, informed by RFC discussion.
 
 ## Want to help maintain?

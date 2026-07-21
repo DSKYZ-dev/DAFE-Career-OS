@@ -4,6 +4,7 @@ import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { parseArgs } from "util";
 import yaml from "js-yaml";
+import { execFileSync } from "child_process";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_PATH = join(ROOT, "templates", "cv-template.html");
@@ -209,8 +210,6 @@ function buildSkills(cvSections, profile) {
 
 function buildHtml(cvSections, profile) {
   const candidate = profile.candidate || {};
-  // Overlay dashboard Settings (data/settings.json) so contact details
-  // entered in the UI actually reach the generated CV.
   try {
     const s = JSON.parse(readFileSync(join(ROOT, 'data', 'settings.json'), 'utf-8'));
     for (const k of ['email', 'phone', 'linkedin', 'portfolio', 'scoreThreshold']) {
@@ -261,6 +260,56 @@ function buildHtml(cvSections, profile) {
   return template.replace(/\{\{[A-Z_]+\}\}/g, (token) => replacements[token] ?? token);
 }
 
+async function tailorCVWithLLM(cvText, jdText, candidate) {
+  const prompt = `You are an expert CV writer. Rewrite the candidate's CV to maximize match for the specific job description.
+
+CANDIDATE INFO:
+- Name: ${candidate.full_name || candidate.name || 'Candidate'}
+- Current Role: ${candidate.current_role || candidate.title || 'Not specified'}
+- Years Experience: ${candidate.years_experience || candidate.experience || 'Not specified'}
+- Location: ${candidate.location || 'Not specified'}
+- Skills: ${(candidate.skills || []).join(', ')}
+
+ORIGINAL CV (markdown):
+${cvText}
+
+JOB DESCRIPTION:
+${jdText}
+
+INSTRUCTIONS:
+1. Return ONLY the rewritten CV in the SAME markdown format as the original
+2. Preserve ALL factual information - NEVER invent metrics, companies, roles, or achievements
+3. Reorder/rephrase to highlight relevance to this specific JD
+4. In Summary: rewrite to mirror JD's top 3-5 requirements using candidate's real experience
+5. In Experience: reorder bullets so most relevant achievements come first; add JD keywords naturally
+6. In Skills: reorder categories so JD's most-mentioned technologies appear first
+7. Keep all sections, dates, company names, and metrics exactly as in original
+8. If JD requires something candidate genuinely lacks, DO NOT add it - leave gaps honest
+
+OUTPUT FORMAT: Return the complete rewritten CV as markdown with the same ## section headers.`;
+
+  const jdPath = join(ROOT, 'jds', `cv-tailor-${Date.now()}.txt`);
+  mkdirSync(dirname(jdPath), { recursive: true });
+  writeFileSync(jdPath, prompt, 'utf-8');
+  
+  try {
+    const result = execFileSync('node', ['cloud-eval.mjs', '--file', jdPath], { 
+      cwd: ROOT, 
+      timeout: 180000,
+      encoding: 'utf-8',
+      maxBuffer: 10 * 1024 * 1024
+    });
+    // Extract just the CV markdown from the response
+    const cvMatch = result.match(/```markdown\s*([\s\S]*?)\s*```/) || result.match(/^([\s\S]+)$/);
+    return cvMatch ? cvMatch[1].trim() : cvText;
+  } catch (e) {
+    console.error(`LLM tailoring failed: ${e.message}, using original CV`);
+    return cvText;
+  } finally {
+    try { require('fs').unlinkSync(jdPath); } catch {}
+  }
+}
+
 async function main() {
   const { values: args } = parseArgs({
     options: {
@@ -268,23 +317,53 @@ async function main() {
       company: { type: "string" },
       role: { type: "string" },
       out: { type: "string" },
+      cv: { type: "string" },
+      jd: { type: "string" },
+      jdFile: { type: "string" },
+      tailor: { type: "boolean" },
       help: { type: "boolean", short: "h" }
     },
     strict: false
   });
 
-  if (args.help || !args.profile) {
+  if (args.help || (!args.profile && !args.jdFile && !args.jd)) {
     console.log(`
-Usage: node generate-cv.mjs --profile <name> [--company <name>] [--role <title>] [--out <path>]
+Usage: node generate-cv.mjs --profile <name> [options]
 
-Generates a tailored CV PDF from the profile and cv.md template.
+Options:
+  --profile <name>     Profile name (required for standard generation)
+  --company <name>     Company name (for filename)
+  --role <title>       Role title (for filename)
+  --out <path>         Output PDF path
+  --cv <path>          Use an alternate CV markdown file instead of cv.md
+  --jd "text"          Job description text for LLM tailoring
+  --jdFile <path>      Path to job description file for LLM tailoring
+  --tailor             Enable LLM-based CV tailoring (requires --jd or --jdFile)
+  --help               Show this help
+
+Examples:
+  node generate-cv.mjs --profile default --company "Acme Corp" --role "Senior Engineer"
+  node generate-cv.mjs --profile default --cv ./output/acme-tailored.md --out output/acme-cv.pdf
+  node generate-cv.mjs --profile default --jdFile ./jds/job.txt --tailor --out output/tailored.pdf
+  node generate-cv.mjs --profile default --jd "We need a Python expert..." --tailor --company "Acme" --role "Engineer"
 `);
     process.exit(args.help ? 0 : 1);
   }
 
-  const profileName = args.profile;
+  const profileName = args.profile || 'default';
   const profile = parseProfile(readFileSync(PROFILE_PATH, "utf-8"));
-  const cvSections = parseCV(readFileSync(CV_PATH, "utf-8"));
+  const candidate = profile.candidate || {};
+  const cvSourcePath = args.cv ? resolve(args.cv) : CV_PATH;
+  let cvSections = parseCV(readFileSync(cvSourcePath, "utf-8"));
+
+  // LLM-based tailoring if requested
+  if (args.tailor && (args.jd || args.jdFile)) {
+    const jdText = args.jd || readFileSync(args.jdFile, 'utf-8');
+    console.log('🤖 Tailoring CV with LLM for specific job...');
+    const tailoredCVText = await tailorCVWithLLM(readFileSync(CV_PATH, 'utf-8'), jdText, candidate);
+    cvSections = parseCV(tailoredCVText);
+    console.log('✅ CV tailored successfully');
+  }
 
   const html = buildHtml(cvSections, profile);
 

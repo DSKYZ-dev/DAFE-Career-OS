@@ -199,7 +199,7 @@ async function validateFile(filePath) {
 }
 
 async function runSelfTest() {
-  const tmp = mkdtempSync(join(tmpdir(), 'dafe-career-os-validate-portals-self-test-'));
+  const tmp = mkdtempSync(join(tmpdir(), 'validate-portals-self-test-'));
   try {
     const file = join(tmp, 'bad.yml');
     writeFileSync(file, `

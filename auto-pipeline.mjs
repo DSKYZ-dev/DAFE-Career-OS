@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
 import { chromium } from 'playwright';
 import { getActiveProfile, coverCandidate } from './profile-helper.mjs';
+import { resolveActiveFocuses } from './focus-catalog.mjs';
 import { parseArgs } from 'util';
 import yaml from 'js-yaml';
 
@@ -20,7 +21,7 @@ const CV_TEXT = readFileSync(join(ROOT, 'cv.md'), 'utf-8').slice(0, 8000);
 const PROFILE_TEXT = readFileSync(join(ROOT, 'config', 'profile.yml'), 'utf-8');
 const PROFILE = yaml.load(PROFILE_TEXT) || {};
 const CANDIDATE = PROFILE.candidate || {};
-const TRACKS = CANDIDATE.tracks || [];
+const FOCUSES = resolveActiveFocuses(PROFILE);
 
 try {
   const { config } = await import('dotenv');
@@ -41,17 +42,18 @@ function escapeTsv(v) {
   return s.includes('\t') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
-// Map a job title to its best-fit track based on the profile's track role lists.
+// Map a job title to its best-fit focus id based on the user's active focuses
+// (config/profile.yml active_focuses, resolved via focus-catalog.mjs).
 function deriveTrack(role) {
   const r = (role || '').toLowerCase();
   let best = null, bestHits = 0;
-  for (const t of TRACKS) {
-    const roles = (t.target_roles || []).map(x => x.toLowerCase());
+  for (const f of FOCUSES) {
+    const keywords = (f.keywords || []).map(x => String(x).toLowerCase());
     let hits = 0;
-    for (const kw of roles) {
+    for (const kw of keywords) {
       if (kw.includes(' ') ? r.includes(kw) : r.split(/[\s/,-]+/).includes(kw)) hits++;
     }
-    if (hits > bestHits) { bestHits = hits; best = t.name; }
+    if (hits > bestHits) { bestHits = hits; best = f.id; }
   }
   return best;
 }
@@ -143,7 +145,7 @@ function parseTldr(text) {
 }
 
 async function generatePdfs(entries) {
-  console.log('\n[5/6] Generating CV and cover letter PDFs...');
+  console.log('\n[5/6] Generating TAILORED CV and cover letter PDFs...');
   let count = 0;
   for (const entry of entries) {
     if (!entry.url || !entry.company) continue;
@@ -154,7 +156,27 @@ async function generatePdfs(entries) {
 
     if (!existsSync(cvOut)) {
       try {
-        execFileSync('node', ['generate-cv.mjs', '--profile', getActiveProfile(), '--company', entry.company, '--role', entry.role || 'Role', '--out', cvOut], { cwd: ROOT, stdio: 'pipe', timeout: 60000 });
+        // Fetch JD for tailoring
+        let jdText = '';
+        try {
+          const { chromium } = await import('playwright');
+          const browser = await chromium.launch({ headless: true });
+          const page = await browser.newPage();
+          await page.goto(entry.url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          jdText = await page.evaluate(() => document.body.innerText.slice(0, 15000));
+          await browser.close();
+        } catch {}
+        
+        // Generate tailored CV
+        const cvArgs = ['generate-cv.mjs', '--profile', getActiveProfile(), '--company', entry.company, '--role', entry.role || 'Role', '--out', cvOut];
+        if (jdText) {
+          cvArgs.push('--jdFile', '-'); // We'll pass JD via stdin or temp file
+          const jdPath = join(ROOT, 'jds', `pipeline-${slug}-${Date.now()}.txt`);
+          mkdirSync(dirname(jdPath), { recursive: true });
+          writeFileSync(jdPath, jdText, 'utf-8');
+          cvArgs.push('--jdFile', jdPath, '--tailor');
+        }
+        execFileSync('node', cvArgs, { cwd: ROOT, stdio: 'pipe', timeout: 120000 });
         count++;
       } catch (e) {
         const msg = e.stderr ? e.stderr.toString().trim().slice(0, 200) : e.message;
@@ -402,11 +424,12 @@ Steps:
   } catch {}
 
   if (args.auto) {
-    // Auto-submit applications
-    console.log('\n🚀 Auto-submit enabled — launching auto-apply...');
+    // Fill & stage applications — nothing here ever submits. Approve staged
+    // entries in the dashboard's Review Queue to actually send them.
+    console.log('\n📋 Filling & staging applications for review...');
     try {
-      execFileSync('node', ['auto-apply.mjs', '--max', '10', '--auto-submit'], { cwd: ROOT, stdio: 'inherit', timeout: 600000 });
-      // Merge tracker after auto-apply
+      execFileSync('node', ['auto-apply.mjs', '--max', '10'], { cwd: ROOT, stdio: 'inherit', timeout: 600000 });
+      // Merge tracker after staging
       try {
         execFileSync('node', ['merge-tracker.mjs'], { cwd: ROOT, stdio: 'inherit', timeout: 30000 });
       } catch {}

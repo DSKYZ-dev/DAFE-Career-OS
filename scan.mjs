@@ -38,7 +38,7 @@ import yaml from 'js-yaml';
 import { makeHttpCtx } from './providers/_http.mjs';
 import { buildTrustValidator } from './providers/_trust-validator.mjs';
 import { mergeProviderPlugins } from './plugins/_engine.mjs';
-import { getCandidate } from './profile-helper.mjs';
+import { getProfile } from './profile-helper.mjs';
 import { compileKeyword, buildTitleFilter, deriveProfileFilter, loadAggressiveness } from './title-filter.mjs';
 
 const parseYaml = yaml.load;
@@ -838,6 +838,10 @@ async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const verify = args.includes('--verify');
+  // --entry-level: widen the net for the "I need a job now!" autonomous loop.
+  // Drops seniority-excluding negatives (Junior/Intern/etc.) so entry-level,
+  // trainee, graduate and no-experience roles survive the scan.
+  const entryLevel = args.includes('--entry-level');
   // Opt-in: on an anti-bot challenge (e.g. pracuj.pl Cloudflare wall), retry the
   // URL in a headed browser. Off by default — headed Chromium needs a display, so
   // scheduled/unattended scans should not rely on it.
@@ -886,8 +890,8 @@ async function main() {
   // title_filter is an OPTIONAL extra source; a user-selectable
   // aggressiveness (data/settings.json) controls how strictly the
   // positive match is required.
-  const candidateProfile = getCandidate();
-  const profileFilter = deriveProfileFilter(candidateProfile);
+  const activeProfile = getProfile();
+  const profileFilter = deriveProfileFilter(activeProfile);
   const portalPos = config.title_filter?.positive;
   const rolePositives = profileFilter.rolePositives.length
     ? profileFilter.rolePositives
@@ -897,10 +901,16 @@ async function main() {
     ...profileFilter.negatives,
     ...(Array.isArray(config.title_filter?.negative) ? config.title_filter.negative : []),
   ])];
+  // In entry-level mode, strip seniority/exclusion negatives so junior,
+  // trainee, intern, graduate and no-experience roles are NOT filtered out.
+  const entryLevelNegatives = ['junior', 'intern', 'interna', 'senior', 'staff', 'lead', 'principal', 'head', 'director', 'apprentice', 'graduate', 'grad', 'trainee', 'new grad', 'new graduate', 'entry', 'entry level', 'entry-level', 'associate'];
+  const effectiveNegatives = entryLevel
+    ? negPositives.filter((k) => !entryLevelNegatives.includes(k.toLowerCase()))
+    : negPositives;
   const titleFilter = buildTitleFilter({
     rolePositives,
     skillPositives,
-    negatives: negPositives,
+    negatives: effectiveNegatives,
     aggressiveness: loadAggressiveness(),
   });
   const locationFilter = buildLocationFilter(config.location_filter);

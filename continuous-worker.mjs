@@ -15,7 +15,7 @@ let running = true;
 let appsToday = 0;
 let lastScanAt = 0;
 let totalEval = 0;
-let totalApply = 0;
+let totalStaged = 0;
 let totalGhost = 0;
 let totalBelow = 0;
 let totalErrors = 0;
@@ -94,7 +94,7 @@ function updateStatus() {
     date: today(),
     appsToday,
     totalEvaluated: totalEval,
-    totalApplied: totalApply,
+    totalStaged: totalStaged,
     totalGhostSkipped: totalGhost,
     totalBelowThreshold: totalBelow,
     pendingRemaining: pending,
@@ -174,13 +174,14 @@ async function main() {
     }
     if (!checkControl()) continue;
 
-    // Auto-apply high-scorers
+    // Fill + stage high-scorers for review — never submits. Approve staged
+    // entries in the dashboard's Review Queue to actually send them.
     const remainingMax = Math.min(APPLY_MAX, MAX_DAILY - appsToday);
     if (remainingMax > 0) {
       try {
-        log(`Auto-applying up to ${remainingMax} jobs...`);
-        await runProcess('node', ['auto-apply.mjs', '--max', String(remainingMax), '--auto-submit']);
-        totalApply += remainingMax;
+        log(`Filling & staging up to ${remainingMax} jobs...`);
+        await runProcess('node', ['auto-apply.mjs', '--max', String(remainingMax)]);
+        totalStaged += remainingMax;
         appsToday += remainingMax;
         await runProcess('node', ['merge-tracker.mjs']);
       } catch (e) {

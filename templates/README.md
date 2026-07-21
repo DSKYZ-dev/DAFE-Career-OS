@@ -1,6 +1,6 @@
 # Templates
 
-System-layer template files used by dafe-career-os scripts and modes. These files are auto-updated when you run `npm run update` -- put user customizations in the user-layer files instead (see DATA_CONTRACT.md).
+System-layer template files. These files are auto-updated when you run `npm run update` -- put user customizations in the user-layer files instead (see DATA_CONTRACT.md).
 
 ## Files
 

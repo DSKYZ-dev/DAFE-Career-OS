@@ -20,6 +20,9 @@
  *                  posting). Drop explicit exclusions.
  */
 
+import { readFileSync } from 'fs';
+import { activeFocusKeywords } from './focus-catalog.mjs';
+
 /**
  * Common multi-word technical phrases → their acronym, so a profile that
  * lists "Machine Learning Engineer" still matches real-world titles like
@@ -76,15 +79,23 @@ export function compileKeyword(kw) {
 }
 
 /**
- * Pull the positive/negative term sets out of a candidate profile.
- * @param {any} candidate
+ * Pull the positive/negative term sets out of the FULL active profile
+ * (config/profile.yml root — NOT just the `candidate:` sub-object).
+ *
+ * `target_roles` (primary + archetype names) and the user's selected focus
+ * catalog entries (config/focus-catalog.yml + config/profile.yml's
+ * `active_focuses`, resolved via focus-catalog.mjs) drive rolePositives.
+ * `skills`/`exclude_keywords` still live under `candidate:`.
+ * @param {any} profile - The full parsed config/profile.yml object.
  * @returns {{ rolePositives: string[], skillPositives: string[], negatives: string[] }}
  */
-export function deriveProfileFilter(candidate = {}) {
-  const tracks = Array.isArray(candidate.tracks) ? candidate.tracks : [];
-  const flatRoles = Array.isArray(candidate.target_roles) ? candidate.target_roles : [];
-  const trackRoles = tracks.flatMap((t) => (Array.isArray(t.target_roles) ? t.target_roles : []));
-  const rolePositives = [...new Set([...flatRoles, ...trackRoles].map((s) => String(s).trim()).filter(Boolean))];
+export function deriveProfileFilter(profile = {}) {
+  const candidate = profile.candidate || {};
+  // activeFocusKeywords already covers target_roles.primary + archetype names
+  // (via the fallback in focus-catalog.mjs when active_focuses isn't set yet),
+  // pre-split into individually-matchable keywords — don't also mix in the
+  // raw compound labels here, they'd never match anything (see labelToKeywords).
+  const rolePositives = activeFocusKeywords(profile);
   const skillPositives = Array.isArray(candidate.skills) ? candidate.skills.map((s) => String(s).trim()).filter(Boolean) : [];
   const negatives = Array.isArray(candidate.exclude_keywords) ? candidate.exclude_keywords.map((s) => String(s).trim()).filter(Boolean) : [];
   return { rolePositives, skillPositives, negatives };
@@ -93,7 +104,7 @@ export function deriveProfileFilter(candidate = {}) {
 /** Read the user's aggressiveness preference (data/settings.json). */
 export function loadAggressiveness(settingsPath = 'data/settings.json') {
   try {
-    const s = JSON.parse(require('fs').readFileSync(settingsPath, 'utf-8'));
+    const s = JSON.parse(readFileSync(settingsPath, 'utf-8'));
     if (['conservative', 'balanced', 'aggressive'].includes(s.filterAggressiveness)) return s.filterAggressiveness;
   } catch {}
   return 'conservative';

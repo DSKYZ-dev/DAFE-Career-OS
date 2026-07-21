@@ -197,7 +197,7 @@ async function callOpenRouter(systemPrompt, userMessage) {
         headers: {
           'Authorization': `Bearer ${key}`,
           'Content-Type':  'application/json',
-          'HTTP-Referer':  'https://github.com/santifer/DAFE Career OS',
+          'HTTP-Referer':  'https://github.com/DSKYZ-dev/DAFE-Career-OS',
           'X-Title':       'dafe-career-os',
         },
         body,
@@ -256,7 +256,7 @@ async function callOpenRouter(systemPrompt, userMessage) {
           headers: {
             'Authorization': `Bearer ${key}`,
             'Content-Type':  'application/json',
-            'HTTP-Referer':  'https://github.com/santifer/DAFE Career OS',
+            'HTTP-Referer':  'https://github.com/DSKYZ-dev/DAFE-Career-OS',
             'X-Title':       'dafe-career-os',
           },
           body,

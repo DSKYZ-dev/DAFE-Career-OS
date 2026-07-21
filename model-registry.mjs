@@ -117,8 +117,26 @@ class ModelRegistry {
         apiKey: env.GEMINI_API_KEY,
         baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
         models: [
+          // 2.5 Pro moved to paid-only in April 2026 — only Flash/Flash-Lite
+          // tiers stayed free. 3.5 Flash (May 2026) is the current free default.
+          { id: 'gemini-3.5-flash', name: 'Gemini 3.5 Flash', tier: 'free', capabilities: ['reasoning', 'fast', 'search'] },
           { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', tier: 'free', capabilities: ['reasoning', 'fast', 'search'] },
-          { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', tier: 'free', capabilities: ['reasoning', 'strong', 'long-context'] },
+          { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', tier: 'paid', capabilities: ['reasoning', 'strong', 'long-context'] },
+        ],
+      });
+    }
+
+    if (env.OLLAMA_API_KEY) {
+      // Ollama Cloud — same account/key as `ollama signin`, hit directly via
+      // ollama.com's API rather than proxying through a local instance.
+      // https://docs.ollama.com/cloud
+      providers.push({
+        name: 'ollama-cloud',
+        apiKey: env.OLLAMA_API_KEY,
+        baseUrl: 'https://ollama.com/api',
+        models: [
+          { id: 'gpt-oss:120b', name: 'GPT-OSS 120B (Ollama Cloud)', tier: 'paid', capabilities: ['reasoning', 'strong', 'agentic'] },
+          { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash (Ollama Cloud)', tier: 'paid', capabilities: ['reasoning', 'fast', 'coding'] },
         ],
       });
     }
@@ -275,15 +293,22 @@ class ModelRegistry {
       url = `${p.baseUrl}/models/${modelId}:generateContent?key=${p.apiKey}`;
       const text = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
       body = { contents: [{ parts: [{ text }] }], generationConfig: { temperature, maxOutputTokens: maxTokens } };
+    } else if (provider === 'ollama-cloud') {
+      // Ollama's native chat format, not OpenAI-compatible — ollama.com acts as
+      // a remote Ollama host. https://docs.ollama.com/cloud
+      url = `${p.baseUrl}/chat`;
+      headers['Authorization'] = `Bearer ${p.apiKey}`;
+      body = { model: modelId, messages, stream: false };
     }
 
-    const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.timeout(120000) });
+    const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.timeout(180000) });
     if (!response.ok) throw new Error(`${provider} ${response.status}: ${await response.text()}`);
-    
+
     const data = await response.json();
-    
+
     if (provider === 'gemini') return data.candidates[0].content.parts[0].text;
     if (provider === 'anthropic') return data.content[0].text;
+    if (provider === 'ollama-cloud') return data.message.content;
     return data.choices[0].message.content;
   }
 

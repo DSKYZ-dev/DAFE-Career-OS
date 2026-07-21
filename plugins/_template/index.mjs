@@ -1,6 +1,6 @@
 // @ts-check
 // {{NAME}} — a dafe-career-os plugin.
-// Guide: https://github.com/santifer/DAFE Career OS/blob/main/docs/PLUGINS.md
+// Guide: https://github.com/DSKYZ-dev/DAFE-Career-OS/blob/main/docs/PLUGINS.md
 //
 // Rules the engine enforces for you:
 //  - Egress ONLY through ctx.fetch / ctx.fetchJson / ctx.fetchText (your manifest

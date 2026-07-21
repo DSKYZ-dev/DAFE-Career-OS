@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
 )
 
 // PDFManifestEntry is one row of data/pdf-index.tsv, written by

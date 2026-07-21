@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/x/ansi"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
 )
 
 func TestViewerRebuildRenderClampsScrollOffset(t *testing.T) {

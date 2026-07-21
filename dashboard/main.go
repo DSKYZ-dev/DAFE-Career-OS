@@ -10,10 +10,10 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/data"
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
-	"github.com/santifer/dafe-career-os/dashboard/internal/ui/screens"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/data"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/ui/screens"
 )
 
 type viewState int

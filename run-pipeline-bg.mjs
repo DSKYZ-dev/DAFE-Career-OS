@@ -23,8 +23,9 @@ const STEPS = {
     { name: 'Scanning job boards', cmd: 'node', args: ['career-orchestrator.mjs', '--scan'] },
     { name: 'Evaluating jobs', cmd: 'node', args: ['auto-pipeline.mjs', '--pdf-only', '--max', '10'] },
     { name: 'Generating CVs & Cover Letters', cmd: 'node', args: ['career-orchestrator.mjs', '--cv'] },
-    { name: 'Auto-applying to jobs', cmd: 'node', args: ['auto-apply.mjs', '--max', '5'] },
+    { name: 'Filling & staging applications for review', cmd: 'node', args: ['auto-apply.mjs', '--max', '5'] },
     { name: 'Merging tracker', cmd: 'node', args: ['merge-tracker.mjs'] },
+    { name: 'Generating printable job report', cmd: 'node', args: ['generate-apply-report.mjs'] },
   ],
   rescore: [
     { name: 'Scoring unscored jobs', cmd: 'node', args: ['auto-pipeline.mjs', '--pdf-only', '--max', '50'] },

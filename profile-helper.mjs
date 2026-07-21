@@ -30,6 +30,17 @@ export function getCandidate() {
   }
 }
 
+/** Full parsed config/profile.yml, root object (target_roles, active_focuses,
+ * candidate, etc.) — use this instead of getCandidate() wherever you need
+ * anything beyond contact info, e.g. target roles or focus-catalog selections. */
+export function getProfile() {
+  try {
+    return yaml.load(readFileSync(join(ROOT, 'config', 'profile.yml'), 'utf-8')) || {};
+  } catch {
+    return {};
+  }
+}
+
 export function coverCandidate() {
   const c = getCandidate();
   return {

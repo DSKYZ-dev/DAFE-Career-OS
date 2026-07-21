@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
 )
 
 // The tracker's Notes column is free-text, but evaluations write it with stable

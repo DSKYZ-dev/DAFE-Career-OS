@@ -11,8 +11,8 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, delimiter } from "node:path";
 import { ensureSkillEntrypoints } from "./skill-entrypoints.mjs";
 
-const REPO = "https://github.com/santifer/DAFE Career OS.git";
-const LATEST_RELEASE = "https://api.github.com/repos/santifer/DAFE Career OS/releases/latest";
+const REPO = "https://github.com/DSKYZ-dev/DAFE-Career-OS.git";
+const LATEST_RELEASE = "https://api.github.com/repos/DSKYZ-dev/DAFE-Career-OS/releases/latest";
 const NPM = process.platform === "win32" ? "npm.cmd" : "npm";
 
 // dafe-career-os is AI-agnostic: every one of these CLIs reads AGENTS.md and works
@@ -35,7 +35,7 @@ Usage:
   npx dafe-career-os init [folder]    Create a new workspace (default: ./dafe-career-os)
 
 After setup, open your AI coding tool inside the folder and paste a job offer.
-Docs: https://github.com/santifer/DAFE Career OS`;
+Docs: https://github.com/DSKYZ-dev/DAFE-Career-OS`;
 
 function die(msg) {
   console.error(`\n✗ ${msg}\n`);

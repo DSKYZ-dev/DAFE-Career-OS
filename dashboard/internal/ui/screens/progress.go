@@ -7,8 +7,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"github.com/santifer/dafe-career-os/dashboard/internal/model"
-	"github.com/santifer/dafe-career-os/dashboard/internal/theme"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/model"
+	"github.com/DSKYZ-dev/DAFE-Career-OS/dashboard/internal/theme"
 )
 
 // ProgressClosedMsg is emitted when the progress screen is dismissed.

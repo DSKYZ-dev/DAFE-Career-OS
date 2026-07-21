@@ -11,7 +11,7 @@
 ### Recommended — one command
 
 ```bash
-npx @santifer/DAFE Career OS init
+npx dafe-career-os-init
 ```
 
 `npx` ships with Node.js — it runs the installer once without installing anything globally. This clones the latest release into `./dafe-career-os` and installs dependencies. Then move into the workspace and open your AI CLI:
@@ -49,7 +49,7 @@ codex exec "Run dafe-career-os tracker mode and summarize the current statuses."
 <summary>Prefer to clone the repo yourself?</summary>
 
 ```bash
-git clone https://github.com/santifer/DAFE Career OS.git
+git clone https://github.com/DSKYZ-dev/DAFE-Career-OS.git
 cd dafe-career-os
 npm install
 ```

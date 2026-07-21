@@ -18,7 +18,7 @@
  *      node detect-reposts.mjs --window 60 (override 90-day window)
  *      node detect-reposts.mjs --self-test
  *
- * Issue #1205 — github.com/santifer/DAFE Career OS
+ * Issue #1205 — github.com/DSKYZ-dev/DAFE-Career-OS
  */
 
 import { readFileSync, existsSync } from 'fs';

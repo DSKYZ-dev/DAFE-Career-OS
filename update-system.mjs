@@ -29,9 +29,9 @@ export { materializeSkillEntrypoints, ensureSkillEntrypoints };
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
 
-const CANONICAL_REPO = 'https://github.com/santifer/DAFE Career OS.git';
-const RAW_VERSION_URL = 'https://raw.githubusercontent.com/santifer/DAFE Career OS/main/VERSION';
-const RELEASES_API = 'https://api.github.com/repos/santifer/DAFE Career OS/releases/latest';
+const CANONICAL_REPO = 'https://github.com/DSKYZ-dev/DAFE-Career-OS.git';
+const RAW_VERSION_URL = 'https://raw.githubusercontent.com/DSKYZ-dev/DAFE-Career-OS/main/VERSION';
+const RELEASES_API = 'https://api.github.com/repos/DSKYZ-dev/DAFE-Career-OS/releases/latest';
 
 // Matches a semver, with or without a leading `v` and an optional
 // Release Please component prefix (e.g. `dafe-career-os-v1.9.0` → `1.9.0`).
@@ -105,6 +105,9 @@ const SYSTEM_PATHS = [
   'scan.mjs',
   'scan-ats-full.mjs',
   'match-star.mjs',
+  'review-queue.mjs',
+  'focus-catalog.mjs',
+  'submit-application.mjs',
   'providers/',
   'doctor.mjs',
   'check-liveness.mjs',
@@ -135,6 +138,7 @@ const SYSTEM_PATHS = [
   'fonts/',
   'examples/',
   'config/profile.example.yml',
+  'config/focus-catalog.yml',
   '.env.example',
   '.agents/',
   '.claude/skills/',
