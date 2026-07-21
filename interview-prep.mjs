@@ -43,7 +43,24 @@ try {
 
 
 
-function esc(s) { return String(s ?? '').replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>'); }
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** http(s)-only URL for use in href="..." — anything else (javascript:, data:, etc.) renders as "#". */
+function safeUrl(u) {
+  try {
+    const parsed = new URL(String(u ?? ''));
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '#';
+  } catch {
+    return '#';
+  }
+}
 function slugify(s) { return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 60); }
 
 async function researchCompany(company, url) {
@@ -255,7 +272,7 @@ li { margin: 4px 0; }
   <span>${date}</span>
 </p>
 
-${jobData.url ? `<p class="meta"><a href="${esc(jobData.url)}" target="_blank" style="color:#0066cc;">🔗 Job Posting</a></p>` : ''}
+${jobData.url ? `<p class="meta"><a href="${esc(safeUrl(jobData.url))}" target="_blank" style="color:#0066cc;">🔗 Job Posting</a></p>` : ''}
 
 <!-- COMPANY OVERVIEW -->
 <div class="section">

@@ -308,6 +308,18 @@ function checkLiveness(url) {
   }
 }
 
+// Escape a value for a double-quoted YAML scalar. Backslashes must be
+// escaped FIRST — escaping the quote before the backslash lets a value
+// ending in "\" corrupt the escaping and break out of the quoted string.
+function yamlEscape(s) {
+  return String(s ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+}
+
 // Deterministic report — no LLM call, no fit score. Being explicit that this
 // mode doesn't score fit is the point: it stops a confusing senior-rubric
 // "reasoning" paragraph from showing up under a trainee-role posting.
@@ -327,9 +339,9 @@ actual job description before approving submission in the Review Queue.
 
 ## Machine Summary
 \`\`\`yaml
-company: "${job.company.replace(/"/g, '\\"')}"
-role: "${job.role.replace(/"/g, '\\"')}"
-url: "${job.url}"
+company: "${yamlEscape(job.company)}"
+role: "${yamlEscape(job.role)}"
+url: "${yamlEscape(job.url)}"
 mode: entry-level
 liveness: ${liveness}
 score: null

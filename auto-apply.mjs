@@ -64,16 +64,27 @@ function loadApplicationScores() {
 }
 
 // ATS Detection
+/** True if `hostname` IS `domain` or a real subdomain of it — not a substring
+ * match, so "evil-greenhouse.io" or "greenhouse.io.evil.com" don't match. */
+function hostMatches(hostname, domain) {
+  return hostname === domain || hostname.endsWith('.' + domain);
+}
+
 function detectATS(url) {
-  const u = url.toLowerCase();
-  if (u.includes('greenhouse.io') || u.includes('grnh.se')) return 'greenhouse';
-  if (u.includes('lever.co') || u.includes('jobs.lever')) return 'lever';
-  if (u.includes('myworkdayjobs.com') || u.includes('workday.com')) return 'workday';
-  if (u.includes('ashbyhq.com') || u.includes('ashby')) return 'ashby';
-  if (u.includes('smartrecruiters.com')) return 'smartrecruiters';
-  if (u.includes('icims.com')) return 'icims';
-  if (u.includes('taleo.net')) return 'taleo';
-  if (u.includes('bamboohr.com')) return 'bamboohr';
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.toLowerCase();
+  } catch {
+    return 'unknown';
+  }
+  if (hostMatches(hostname, 'greenhouse.io') || hostMatches(hostname, 'grnh.se')) return 'greenhouse';
+  if (hostMatches(hostname, 'lever.co')) return 'lever';
+  if (hostMatches(hostname, 'myworkdayjobs.com') || hostMatches(hostname, 'workday.com')) return 'workday';
+  if (hostMatches(hostname, 'ashbyhq.com')) return 'ashby';
+  if (hostMatches(hostname, 'smartrecruiters.com')) return 'smartrecruiters';
+  if (hostMatches(hostname, 'icims.com')) return 'icims';
+  if (hostMatches(hostname, 'taleo.net')) return 'taleo';
+  if (hostMatches(hostname, 'bamboohr.com')) return 'bamboohr';
   return 'unknown';
 }
 

@@ -10,7 +10,24 @@ const OUTPUT_DIR = join(ROOT, 'output');
 const DATA_DIR = join(ROOT, 'data');
 const REPORTS_DIR = join(ROOT, 'reports');
 
-function esc(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** http(s)-only URL for use in href="..." — anything else (javascript:, data:, etc.) renders as "#". */
+function safeUrl(u) {
+  try {
+    const parsed = new URL(String(u ?? ''));
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : '#';
+  } catch {
+    return '#';
+  }
+}
 
 function collectSessionInfo() {
   const info = {
@@ -79,7 +96,7 @@ function buildHtml(info) {
 
   const pipelineRows = info.pipelineJobs.map(j => {
     const cls = j.status === 'Applied' ? 'status-applied' : 'status-pending';
-    return `<tr class="${cls}"><td>${esc(j.company)}</td><td>${esc(j.role)}</td><td>${esc(j.location)}</td><td class="${cls}">${j.status}</td><td><a href="${esc(j.url)}" target="_blank">Link</a></td></tr>`;
+    return `<tr class="${cls}"><td>${esc(j.company)}</td><td>${esc(j.role)}</td><td>${esc(j.location)}</td><td class="${cls}">${j.status}</td><td><a href="${esc(safeUrl(j.url))}" target="_blank">Link</a></td></tr>`;
   }).join('\n');
 
   const pdfSection = info.outputPdfs.length > 0
