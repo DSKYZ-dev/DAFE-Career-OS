@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.16.0](https://github.com/DSKYZ-dev/DAFE-Career-OS/compare/dafe-career-os-v1.15.0...dafe-career-os-v1.16.0) (2026-07-21)
+
+
+### Features
+
+* human-reviewed application queue, real focus filtering, DAFE rebrand ([a0347fa](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/a0347fab2df3a010628ea6d96650a6526faaa881))
+* profile-driven title filter with user-selectable aggressiveness ([fbcbfe0](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/fbcbfe0201bebd1622a1740fe23c0d0c35329c9b))
+
+
+### Bug Fixes
+
+* address CodeQL security findings (alerts [#6](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/6)-25) ([33a02e8](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/33a02e8009cabc50d0b1fc055fe0052d43da4849))
+* **dashboard:** bind IPv4 (0.0.0.0) so localhost reliably connects; launcher opens 127.0.0.1 ([1136f85](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/1136f85dacdd60494b5cfa82c5fa1986b1619862))
+* **dashboard:** listen on BOTH IPv4 and IPv6; disable HTML caching ([3a47565](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/3a47565486e561237090df3941cea62d40102337))
+* **dashboard:** live SSE progress streaming + disable auto-submit in default pipeline ([bc1f7fb](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/bc1f7fb3fb8729d6a1c5888366f2b68004b3560a))
+* **dashboard:** never permanently lock UI on a dead pipeline ([640af7f](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/640af7f87ffd3d65994bd83500d9b10a4485a643))
+* **launcher:** always start one fresh server; kill any stale one via pid file ([e0de56b](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/e0de56b91fa58190e95c1b4e8df8e6a1faac1f02))
+* **launcher:** don't infinite-loop if port 3456 is already in use ([a6c73e0](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/a6c73e0e0900f52f3c4712d508a2c4191b16d9f5))
+* **launcher:** hard kill all dashboard processes before fresh start ([dc10354](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/dc103547d5675ceab4d963dfc4247a1e8a3ecfea))
+* **pipeline:** make setStatus() tolerant of a corrupted status file ([aac78a5](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/aac78a5bac985568375e39898b5f6b96bd259058))
+* remove remaining shell-string execSync paths in test-all.mjs (alert [#14](https://github.com/DSKYZ-dev/DAFE-Career-OS/issues/14)) ([c27ed45](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/c27ed4506fb48e818636f960e045752b2aa0ef99))
+* restore HTML-escaping in cover letters; close CI gaps ([cb6a647](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/cb6a647d3e4b497a6bd7a0a78db9ac6003e55366))
+* switch default LLM to gemini-2.5-flash (dead 1.5-flash + OpenRouter :free tiers) + Windows model-registry fixes ([e5b6bad](https://github.com/DSKYZ-dev/DAFE-Career-OS/commit/e5b6bad655cd244b29753e25bb364b30b2f364a0))
+
 ## [1.15.0](https://github.com/DSKYZ-dev/DAFE-Career-OS/compare/dafe-career-os-v1.14.0...dafe-career-os-v1.15.0) (2026-06-29)
 
 
