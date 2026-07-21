@@ -18,18 +18,20 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      # Publish the npm scaffolder only when a release was just created.
-      # Runs in the same job because a release created via GITHUB_TOKEN does
-      # not trigger separate `on: release` workflows.
+      # Publish the npm scaffolder only when a release was just created AND
+      # an NPM_TOKEN secret is actually configured. Runs in the same job
+      # because a release created via GITHUB_TOKEN does not trigger separate
+      # `on: release` workflows. Gating on NPM_TOKEN's presence means this
+      # skips cleanly (grey, not a red failure) until the secret is added.
       - uses: actions/checkout@v7
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created && secrets.NPM_TOKEN != '' }}
       - uses: actions/setup-node@v6
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created && secrets.NPM_TOKEN != '' }}
         with:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
       - name: Publish scaffolder to npm
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created && secrets.NPM_TOKEN != '' }}
         run: npm publish --provenance --access public
         working-directory: scaffolder
         env:
