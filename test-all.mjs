@@ -12,7 +12,7 @@
  */
 
 
-import { execSync, execFileSync, spawn } from 'child_process';
+import { execFileSync, spawn } from 'child_process';
 import { readFileSync, existsSync, readdirSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, statSync, unlinkSync, realpathSync } from 'fs';
 import { join, dirname, delimiter } from 'path';
 import { tmpdir } from 'os';
@@ -61,23 +61,20 @@ function fail(msg) { console.log(`  ❌ ${msg}`); failed++; }
 function warn(msg) { console.log(`  ⚠️  ${msg}`); warnings++; }
 
 /**
- * Run a shell command or executable and return trimmed stdout on success.
+ * Run an executable with an explicit argument vector and return trimmed
+ * stdout on success. Always uses execFileSync (never a shell), so no
+ * argument is ever subject to shell parsing regardless of its content.
+ * Failures return null so the caller can decide whether to count the
+ * result as a failure or warning.
  *
- * Array-form arguments use execFileSync to avoid shell parsing. String-only
- * commands use execSync for existing simple checks. Failures return null so the
- * caller can decide whether to count the result as a failure or warning.
- *
- * @param {string} cmd - Command or executable to run.
- * @param {string[]} [args=[]] - Optional argument vector for execFileSync.
+ * @param {string} cmd - Executable to run.
+ * @param {string[]} [args=[]] - Argument vector.
  * @param {object} [opts={}] - Extra child_process options.
  * @returns {string|null} Trimmed stdout, or null when the command fails.
  */
 function run(cmd, args = [], opts = {}) {
   try {
-    if (Array.isArray(args) && args.length > 0) {
-      return execFileSync(cmd, args, { cwd: ROOT, encoding: 'utf-8', timeout: 30000, ...opts }).trim();
-    }
-    return execSync(cmd, { cwd: ROOT, encoding: 'utf-8', timeout: 30000, ...opts }).trim();
+    return execFileSync(cmd, args, { cwd: ROOT, encoding: 'utf-8', timeout: 30000, ...opts }).trim();
   } catch (e) {
     return null;
   }
@@ -93,14 +90,13 @@ function fileExists(path) { return existsSync(join(ROOT, path)); }
 
 function toBashPath(wpath) {
   if (process.platform !== 'win32') return wpath;
+  const forwardSlashed = wpath.replace(/\\/g, '/');
   try {
-    const forwardSlashed = wpath.replace(/\\/g, '/');
-    const out = execSync(`wsl wslpath -u "${forwardSlashed}"`, { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
+    const out = execFileSync('wsl', ['wslpath', '-u', forwardSlashed], { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
     if (out) return out;
   } catch {}
   try {
-    const forwardSlashed = wpath.replace(/\\/g, '/');
-    const out = execSync(`cygpath -u "${forwardSlashed}"`, { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
+    const out = execFileSync('cygpath', ['-u', forwardSlashed], { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim();
     if (out) return out;
   } catch {}
   return wpath.replace(/^[A-Za-z]:/, m => '/' + m[0].toLowerCase()).replace(/\\/g, '/');
