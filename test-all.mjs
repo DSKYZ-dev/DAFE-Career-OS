@@ -1961,7 +1961,7 @@ try {
   const { buildTitleFilter, compileKeyword } = await import(pathToFileURL(join(ROOT, 'scan.mjs')).href);
 
   // Short all-letter acronyms match on WORD BOUNDARIES, not as substrings.
-  const cooFilter = buildTitleFilter({ positive: ['coo'] });
+  const cooFilter = buildTitleFilter({ positive: ['coo'], aggressiveness: 'aggressive' });
   if (cooFilter('Chief Operating Officer (COO)') === true) pass('"COO" positive matches the standalone token in a title');
   else fail('"COO" should match a title containing the standalone token COO');
   if (cooFilter('Sales Coordinator') === false) pass('"COO" positive does NOT match "Coordinator" (no mid-word match)');
@@ -1987,7 +1987,7 @@ try {
   }
 
   // A malformed title_filter (null / numeric / empty entries) must not crash.
-  const messyFilter = buildTitleFilter({ positive: ['cfo', null, 123, '', 'head of'] });
+  const messyFilter = buildTitleFilter({ positive: ['cfo', null, 123, '', 'head of'], aggressiveness: 'aggressive' });
   if (messyFilter('Group CFO') === true && messyFilter('Marketing Coordinator') === false) {
     pass('buildTitleFilter ignores non-string/empty keyword entries without crashing');
   } else {
