@@ -1,6 +1,6 @@
 {
   "name": "dafe-career-os-init",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "One-command installer for dafe-career-os — the AI-powered job search pipeline built on Claude Code.",
   "bin": {
     "dafe-career-os": "bin/cli.mjs"
